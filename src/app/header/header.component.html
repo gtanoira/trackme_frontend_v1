@@ -1,0 +1,53 @@
+      <header class="navbar fixed-top navbar-expand navbar-light flex-column flex-md-row bd-navbar">
+
+         <!-- Logo Compania -->
+         <a href="#" class="navbar-brand">
+            <img src="/static/images/LogoIlc.png" height="40" alt="" />
+         </a>
+         
+         <!-- Boton de Menu para Responsivness -->
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBtnCollapse" aria-controls="navbarBtnCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+
+         <!-- Menu Main -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+
+               <ul class="navbar-nav bd-navbar-nav flex-row">
+                  <li class="nav-item dropdown">
+                     <a class="nav-item nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="menuTracking" aria-haspopup="true" aria-expanded="true">
+                        Track Me 
+                     </a>
+                  </li>
+               </ul>
+            </div>
+
+
+         <!-- Menu Maintenance -->
+         <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+               <li class="nav-item">
+                  <a class="nav-link" href="#"></a>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-item nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="menuAdmin" aria-haspopup="true" aria-expanded="true">
+                     Admin
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="menuAdmin">
+                     <a class="dropdown-item" href="/customer_orders/utilities">Customer Orders - Import</a>
+                     <a class="dropdown-item" href="/entities/utilities">Entities - Import</a>
+                     <div class="dropdown-divider"></div>
+                     <a class="dropdown-item" href="/companies">Companies - List</a>
+                     <a class="dropdown-item" href="/countries">Countries - List</a>
+                     <a class="dropdown-item" href="/">Customer Orders - List</a>
+                     <a class="dropdown-item" href="/entities/cus">Customers - List</a>
+                     <a class="dropdown-item" href="/entities/car">Carriers - List</a>
+                     <a class="dropdown-item" href="/entities/sup">Supliers - List</a>
+                  </div>
+               </li>
+           
+            <li class="nav-item">
+               <a class="dropdown-item" href="/logout">LogOut</a>
+            </li>
+         </ul>
+
+      </header>

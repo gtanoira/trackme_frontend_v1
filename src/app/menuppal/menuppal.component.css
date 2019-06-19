@@ -1,0 +1,149 @@
+.brick-alias {
+  color: blue;
+  font-family: RajdhaniBold;
+  font-size: 28px;
+}
+.brick-alias--blue {
+  color: darkblue!important;
+}
+.brick-alias--red {
+  color: darkred!important;
+}
+.brick-alias--green {
+  color: darkgreen!important;
+}
+.brick-alias--coral {
+  color: darksalmon!important;
+}
+.brick-alias--violet {
+  color: darkviolet!important;
+}
+
+.brick-title {
+  color: black;
+  font-family: RajdhaniRegular;
+  font-size: 16px;
+}
+
+.brick-group {
+  color: black;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: 7px;
+}
+
+.grid {
+  /* background: #EEE; */
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* clearfix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.grid-sizer,
+.grid-item {
+  width: 15%;
+}
+
+.grid-item {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.19)!important;
+  /* border-left: 12px solid #191957; */
+  /* border-radius: 5px 20px 5px 5px; */
+  border-top-right-radius: 1.2em;
+  float: left;
+  height: 90px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.grid-item--blue {
+  background: linear-gradient(45deg, transparent 40%, blue);
+  border: 0.7px solid darkblue;
+}
+.grid-item--red {
+  background: linear-gradient(45deg, transparent 40%, red);
+  border: 0.7px solid darkred;
+}
+.grid-item--green {
+  background: linear-gradient(45deg, transparent 40%, green);
+  border: 0.7px solid darkgreen;
+}
+.grid-item--coral {
+  background: linear-gradient(45deg, transparent 40%, coral);
+  border: 0.7px solid darksalmon;
+}
+.grid-item--violet {
+  background: linear-gradient(45deg, transparent 40%, violet);
+  border: 0.7px solid darkviolet;
+}
+
+.grid-item--width2 { width:  40%; }
+.grid-item--width3 { width:  60%; }
+
+.grid-item--height2 { height: 200px; }
+.grid-item--height3 { height: 260px; }
+.grid-item--height4 { height: 360px; }
+
+.group-btn {
+  color: black;
+  font-family: Arial;
+  font-size: 14px;
+  /* padding-left: 10px;
+  padding-right: 10px; */
+  margin: 0px 1px;
+  text-align: center;
+  width: 100px;
+}
+.group-btn--blue {
+  background: linear-gradient(45deg, transparent 40%, blue);
+  border: 1px solid darkblue;
+}
+.group-btn--blue:hover {
+  box-shadow: 0px 0px 10px 2px  blue;
+}
+
+.group-btn--red {
+  background: linear-gradient(45deg, transparent 40%, red);
+  border: 0.7px solid #efadac;
+}
+.group-btn--red:hover {
+  box-shadow: 0px 0px 10px 2px  red;
+}
+
+.group-btn--green {
+  background: linear-gradient(45deg, transparent 40%, green);
+  border: 0.7px solid darkgreen;
+}
+.group-btn--green:hover {
+  box-shadow: 0px 0px 10px 2px  green;
+}
+
+.group-btn--coral {
+  background: linear-gradient(45deg, transparent 40%, coral);
+  border: 0.7px solid darksalmon;
+}
+.group-btn--coral:hover {
+  box-shadow: 0px 0px 10px 2px  coral;
+}
+
+.group-btn--violet {
+  background: linear-gradient(45deg, transparent 40%, violet);
+  border: 0.7px solid darkviolet;
+}
+.group-btn--violet:hover {
+  box-shadow: 0px 0px 10px 2px  violet;
+}
+
+.group-btn--black {
+  background: linear-gradient(45deg, transparent 40%, black);
+  border: 0.7px solid black;
+}
+.group-btn--black:hover {
+  box-shadow: 0px 0px 10px 2px  black;
+}

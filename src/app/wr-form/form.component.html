@@ -1,0 +1,145 @@
+<!--  FORM   -->
+<div
+  *ngIf="formData; else loading"
+  [formGroup]="formData"
+  fxLayout="column">
+  <!-- GENERAL DATA -->
+  <div
+    fxLayout="row"
+    fxLayout.sm="column"
+    fxLayout.xs="column"
+    fxLayoutGap="8px">
+
+    <!-- LEFT BLOCK  -->
+    <mat-card
+      fxFlex=" 1 0 250px">
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Warehouse Receipt No."
+          formControlName="orderNo">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="WR date"
+          [matDatepicker]="orderDate"
+          formControlName="orderDate"
+          required>
+        <mat-datepicker-toggle matSuffix [for]="orderDate"></mat-datepicker-toggle>
+        <mat-datepicker #orderDate></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select
+          placeholder="WR type"
+          formControlName="orderType"
+          required>
+          <mat-option
+            *ngFor="let order of ordersTypeOptions"
+            [value]="order.id">
+            {{ order.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+
+    <!-- CENTER BLOCK  -->
+    <mat-card
+      fxFlex=" 1 0 250px">
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="FROM:"
+          formControlName="fromEntity"
+          required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="TO:"
+          formControlName="toEntity"
+          required>
+      </mat-form-field>
+    </mat-card>
+
+    <!-- RIGHT BLOCK  -->
+    <mat-card
+      fxFlex=" 1 0 250px">
+
+      <mat-form-field>
+        <mat-select
+          formControlName="shipmentMethod"
+          placeholder="Shipment Method"
+          [errorStateMatcher]="matcher">
+          <mat-option
+            *ngFor="let method of shipmentOptions"
+            [value]="method.id">
+            {{ method.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="No. of pieces"
+          formControlName="pieces">
+      </mat-form-field>
+
+      <mat-form-field>
+        <textarea
+          matInput
+          placeholder="Observations"
+          rows="3"
+          formControlName="observations">
+        </textarea>
+      </mat-form-field>
+    </mat-card>
+
+    <!-- BUTTONS BLOCK  -->
+    <div
+      fxFlex=" 0 0 40px">
+      <!--  SAVE button  -->
+      <button
+        mat-mini-fab
+        title="Save WR"
+        color=primary
+        (click)="saveOrder(orderId)">
+        <mat-icon>save</mat-icon>
+      </button>
+      <!--  LOAD items  -->
+      <button
+        mat-mini-fab
+        title="Load items into WR"
+        color=primary
+        (click)="loadItems(orderId)">
+        <mat-icon>receipt</mat-icon>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ITEMS  -->
+  <mat-card
+    fxFlex="1 1 201px">
+    <app-wr-items
+      [orderId]="orderId"
+      [formData]="formData">
+    </app-wr-items>
+  </mat-card>
+
+</div>
+
+<ng-template 
+  #loading>
+  <div class="loader-spinner"></div>
+</ng-template>
+
+<!-- Custom modal setup -->
+<div id="modal-container" class="modal-hidden"></div>
+<div id="modal-overlay" (click)="removeModal()" class="modal-hidden"></div>

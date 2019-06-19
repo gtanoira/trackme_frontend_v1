@@ -1,0 +1,71 @@
+app-main {
+  margin: 10px;
+}
+
+.formMessage {
+  color: red;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: small;
+  font-weight: bold;
+  height: 20px;
+}
+
+.header {
+  background-color: #673ab7;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+  flex-shrink: 0;
+  height: 40px!important;
+}
+
+.header h5 {
+  font-size: 24px;
+  color: #fff;
+  font-family: RajdhaniRegular;
+}
+
+.mat-button {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+.mat-icon {
+  color: #fff;
+}
+
+.material-icons {
+  width: 24px;
+}
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.toolbar-environment {
+  color: #fff;
+  font-family: RajdhaniRegular;
+  font-size: 16px;
+  text-align: right;
+}
+
+.toolbar-home {
+  color: #fff;
+  font-family: RajdhaniRegular;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.toolbar-logout {
+  color: #fff;
+  font-family: RajdhaniRegular;
+  font-size: 16px;
+}
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-user {
+  color: #fff;
+  font-family: RajdhaniRegular;
+  font-size: 16px;
+}

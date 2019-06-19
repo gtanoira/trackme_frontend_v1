@@ -1,0 +1,50 @@
+﻿<!-- Container Right -->
+<div
+  fxLayout="column"
+  fxLayoutAlign="start center">
+
+<img src="/assets/files/claxsonLogo.png" />
+<h2>Login</h2>
+
+<div
+  style="width: 300px;">
+<form
+  fxLayout="column"
+  [formGroup]="loginForm">
+
+  <!-- Username -->
+  <mat-form-field
+    appearance="outline">
+    <mat-label>Nombre de usuario</mat-label>
+    <input
+      matInput
+      placeholder="Ingrese su usuario de red"
+      formControlName="username" />
+    <mat-icon matSuffix>user</mat-icon>
+  </mat-form-field>
+
+  <!-- Password -->
+  <mat-form-field
+    appearance="outline">
+    <mat-label>Contraseña</mat-label>
+    <input
+      type="password"
+      matInput
+      placeholder="contraseña"
+      formControlName="password" />
+    <mat-icon matSuffix>password</mat-icon>
+  </mat-form-field>
+
+  <!-- LOGIN button -->
+  <button
+    style="width: 200px; margin: auto;"
+    [disabled]="loading"
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit()">
+    Login
+  </button>
+  <div *ngIf="error" class="login-error">{{error}}</div>
+</form>
+</div>
+</div>

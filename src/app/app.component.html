@@ -1,0 +1,48 @@
+<!-- Main Header  -->
+<mat-toolbar
+  class="header">
+  <!-- Title -->
+  <h5>Portal Admin II</h5>
+  <span class=toolbar-spacer></span>
+  <!-- Main Menu (HOME) -->
+  <a
+    class="toolbar-home"
+    mat-button
+    routerLink="/">
+    Home
+    <mat-icon svgIcon="home_main"></mat-icon>
+  </a>
+  <!-- Environment Variables -->
+  <a
+    class="toolbar-environment"
+    mat-button
+    [matMenuTriggerFor]="menu">
+    Environment
+    <mat-icon svgIcon="env_info"></mat-icon>
+  </a>
+  <mat-menu #menu="matMenu">
+    <span mat-menu-item>Portal: {{ toolbarPortal }}</span>
+    <span mat-menu-item>Login: {{ toolbarLogin }}</span>
+  </mat-menu>
+  <!-- User Name -->
+  <span class="toolbar-user">{{ toolbarUser }}</span>
+  <mat-icon svgIcon="user_toolbar"></mat-icon>
+  <!-- Logout -->
+  <a
+    class="toolbar-logout"
+    mat-button
+    (click)="authenticationService.logout()">
+    Logout
+    <mat-icon svgIcon="logout"></mat-icon>
+  </a>
+</mat-toolbar>
+
+<!-- Error Message Line -->
+<div
+  class="formMessage">
+  {{ formErrorMessage }}
+</div>
+
+<!-- Main Body -->
+<router-outlet></router-outlet>
+

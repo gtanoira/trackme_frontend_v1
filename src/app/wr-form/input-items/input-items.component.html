@@ -1,0 +1,34 @@
+
+  <!--  Item Form  -->
+  <div
+    [formGroup]="itemFormData">
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Item ID"
+        formControlName="itemId">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Part No."
+        formControlName="partNumber">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Serial No."
+        formControlName="serialNumber">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Condition"
+        formControlName="condition">
+    </mat-form-field>
+
+  </div>

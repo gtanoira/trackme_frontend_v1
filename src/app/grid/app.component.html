@@ -1,0 +1,15 @@
+<div class="header">
+  <input
+    type="text"
+    (keyup)="onQuickFilterChanged()"
+    [(ngModel)]="quickSearchValue"
+    placeholder="quick filter..." />
+</div>
+<ag-grid-angular #agGrid
+                 class="wrapper ag-theme-balham"
+                 [gridOptions]="gridOptions"
+                 [columnDefs]="columnDefs"
+                 [rowData]="rowData"
+                 [defaultColDef]="defaultColDef"
+                 [sideBar]="sideBar">
+</ag-grid-angular>

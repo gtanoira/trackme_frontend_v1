@@ -1,0 +1,9 @@
+/* header.component.css */
+
+.bd-navbar {
+  min-height: 4rem;
+  background-color: #ffc;
+  border-color: #f90;
+  border-width: 1px;
+  border-style: solid;
+}

@@ -1,0 +1,41 @@
+<!--<div class="">-->
+  <mat-tab-group
+      id="tab-group"
+      class="wrapper"
+      (selectedIndexChange)="selected.setValue($event)">
+
+      <mat-tab
+          *ngFor="let tab of dynamicTabs"
+          label="{{tab.label}}" isActive="true">
+
+          <ng-template
+            mat-tab-label>
+            {{tab.label}}&nbsp;&nbsp;
+            <small><button class="close" (click)="removeTab(tab)">&times;</button></small>
+          </ng-template>
+
+          <ndc-dynamic
+            [ndcDynamicComponent]="tab.component"
+            [ndcDynamicInputs]="tab.inputs">
+          </ndc-dynamic>
+      </mat-tab>
+
+      <!--  Add GRID tab  -->
+      <mat-tab #addGrid disabled>
+        <ng-template mat-tab-label>
+          <button mat-icon-button (click)="addTab()">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </ng-template>
+      </mat-tab>
+
+      <!--  Add CUSTOMER ORDER FORM tab  -->
+      <mat-tab disabled>
+        <ng-template mat-tab-label>
+          <button mat-icon-button (click)="addTabCustomerForm()">
+            <mat-icon>description</mat-icon>
+          </button>
+        </ng-template>
+      </mat-tab>
+  </mat-tab-group>
+<!--</div>-->

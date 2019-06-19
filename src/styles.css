@@ -1,0 +1,106 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+/* Angular prebuild theme */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+/* AG-GRID css */
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+/*  Normalize CSS */
+@import 'normalize.css/normalize.css';
+
+/* ***************************************************************************
+   Main Page
+*/
+html,
+body {
+  height: 100%;
+  max-width: 1920px;
+}
+
+body {
+  min-height: 100%;
+  background-color: #e3e3c8;
+}
+
+.header {
+  flex-shrink: 0;
+  /* background-color: rgb(84, 84, 84); */
+  height: 28px;
+}
+
+h1, h2, h3, h4 {
+  font-family: Roboto,sans-serif;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* *************************************************************************************
+    Angular Material customizations
+*/
+.mat-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.19)!important;
+}
+
+.ng-valid[required],
+.ng-valid.required {
+  border-left: 5px solid #42a948; /* green */
+}
+
+.ng-invalid[required] {
+  border-left: 5px solid #a94442; /* red */
+}
+
+/* *************************************************************************************
+    Loading Spinner CSS
+*/
+.loader-spinner {
+  margin: 0 auto;
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid #673ab7;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* *************************************************************************************
+    Fonts
+*/
+@font-face {
+  font-family: RajdhaniRegular;
+  src: url("assets/fonts/RajdhaniRegular.woff") format("woff"), url("assets/fonts/RajdhaniRegular.ttf")  format("truetype");
+}
+@font-face {
+  font-family: RajdhaniBold;
+  src: url("assets/fonts/RajdhaniBold.woff") format("woff"), url("assets/fonts/RajdhaniBold.ttf")  format("truetype");
+}
+@font-face {
+  font-family: RajdhaniMedium;
+  src: url("assets/fonts/RajdhaniMedium.woff") format("woff"), url("assets/fonts/RajdhaniMedium.ttf")  format("truetype");
+}
