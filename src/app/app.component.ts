@@ -25,15 +25,13 @@ export class AppComponent implements OnInit {
   formErrorMessage: string;
   // Toolbar variables
   toolbarUser   = '';
-  toolbarSapGw  = '';
-  toolbarLogin  = '';
-  toolbarPortal = '';
+  toolbarLoginServer  = '';
+  toolbarEnvironment = '';
 
   constructor(
     public authenticationService: AuthenticationService,
     private domSanitizer: DomSanitizer,
     private errorMessageService: ErrorMessageService,
-    private elementRef: ElementRef,
     private matIconRegistry: MatIconRegistry
   ) {
 
@@ -58,6 +56,11 @@ export class AppComponent implements OnInit {
       'user_toolbar',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/avatar.svg')
     );
+    // Password
+    this.matIconRegistry.addSvgIcon(
+      'user_password',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/lock.svg')
+    );
 
     // Subscribir a los errores del módulo, para que sean mostrados en la pantalla
     this.errorMessageService.formCurrentMessage
@@ -77,8 +80,8 @@ export class AppComponent implements OnInit {
     // Borrar posible mensaje de error
     this.errorMessageService.changeErrorMessage(null);
     // Toolbar
-    this.toolbarLogin  = environment.envData.loginServer;
-    this.toolbarPortal = environment.envData.portal;
+    this.toolbarLoginServer = environment.envData.loginServer;
+    this.toolbarEnvironment = environment.envData.mode;
   }
 
 }

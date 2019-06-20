@@ -16,12 +16,16 @@ import { User } from '../models/user';
 // Environment
 import { environment } from '../environments/environment';
 
+// Services
+import { ErrorMessageService } from './error-message.service'
+
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
   constructor(
+    private errorMessageService: ErrorMessageService,
     private http: HttpClient,
     private router: Router
   ) {
@@ -30,36 +34,51 @@ export class AuthenticationService {
   }
 
   // GETTERS
+  // Get the user info store on the browser LocalStorage
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
   }
 
   // LOGIN y AUTENTICACION del usuario que se quiere loguear
   login(username: string, password: string): Observable<any> {
+    // Headers
     const httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': 'Basic ' + btoa(username + ":" + password)
+        'Content-Type': 'application/json;charset=utf-8'
       })
     };
-    return this.http.get<any>(`${environment.envData.loginServer}/api2/ldap/portaladmin_v2`, httpOptions)
+    // Body
+    const loginData = {
+      auth: {
+        email: username,
+        password: password
+      }
+    };
+    return this.http.post<any>(`${environment.envData.loginServer}/user_token`, loginData, httpOptions)
       .pipe(
         map(
           data => {
-            // login successful
+            // login successful, get the user data
             if (data) {
-              // Recuperar los datos obtenidos del LDAP server
-              const user: User = {
-                id:             data.id,
-                userName:       data.userName,
-                firstName:      data.firstName,
-                lastName:       data.lastName,
-                fullName:       `${data.firstName}, ${data.lastName}`,
-                sessionKey:     data.sessionKey,
-                authorizations: JSON.parse(data.authorizations)
+              // Read the user data and store them in the localStorage
+              try {
+                const user: User = {
+                  id:             data.id,
+                  email:          data.email,
+                  firstName:      data.first_name,
+                  lastName:       data.last_name,
+                  fullName:       `${data.first_name} ${data.last_name}`,
+                  authorizations: (data.authorizations) ? {} : JSON.parse(data.authorizations)
+                }
+
+                // store user details in local storage to keep user logged in between page refreshes
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                this.currentUserSubject.next(user);
+
+              } catch (e) {
+                this.errorMessageService.changeErrorMessage('TRK-0008(E): the user data received from the backend is incorrect');
+                return null;
               }
-              // store user details in local storage to keep user logged in between page refreshes
-              localStorage.setItem('currentUser', JSON.stringify(user));
-              this.currentUserSubject.next(user);
             }
             return data;
           }

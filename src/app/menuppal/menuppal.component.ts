@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 
 // Models
 // import { IsotopeOptions } from './isotope-options';
@@ -19,18 +19,6 @@ import * as Isotope from 'isotope-layout';
 export class MenuppalComponent implements OnInit, AfterViewInit {
 
   // Contenido de las opciones de Menú
-  /*
-  bricks = [
-    {
-      title: 'Cotizaciones SAP',
-      alias: 'AdCs',
-      group: 'Administración',
-      id: 'pgmCotizaciones',
-      color: 'blue'
-    },
-    { ... }
-  ]
-  */
   bricks = [];
 
   // Filtro para el menu basado en los Grupos
@@ -45,7 +33,7 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
   private isotopeOptions: Isotope.IsotopeOptions = {
     itemSelector: '.grid-item',
     layoutMode: 'fitRows',
-    stagger: 30,
+    stagger: 80,
     transitionDuration: '0.8s'
   };
   // Instanciar la clase Isotope
@@ -64,6 +52,7 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
       .subscribe(
         data => {
           this.bricks = data;
+          console.log('*** BRICK-DATA:', this.bricks);
 
           // Armar el array de Grupos
           this.bricks.forEach(mnuButton => {

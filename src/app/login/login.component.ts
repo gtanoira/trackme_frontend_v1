@@ -57,11 +57,16 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;  // spinning ON
-    // Autenticar al usuario contra el Login Central
+    // Authenticate the user against the LOGIN server and obtain the JWT token and User data
     this.authenticationService.login(this.lfctrls.username.value, this.lfctrls.password.value)
       .subscribe(
         data => {
-          this.router.navigate([this.returnUrl]);
+          if (data) {
+            this.router.navigate([this.returnUrl]);
+          } else {
+            this.loading = false;
+            this.router.navigate(['/login']);
+          }
         },
         error => {
           this.errorMessageService.changeErrorMessage(error);

@@ -3,7 +3,7 @@
   fxLayout="column"
   fxLayoutAlign="start center">
 
-<img src="/assets/files/claxsonLogo.png" />
+<img src="/assets/images/trackme.png" />
 <h2>Login</h2>
 
 <div
@@ -15,24 +15,26 @@
   <!-- Username -->
   <mat-form-field
     appearance="outline">
-    <mat-label>Nombre de usuario</mat-label>
+    <mat-label>User name</mat-label>
     <input
+      style="width:calc(100% - 24px)"
       matInput
-      placeholder="Ingrese su usuario de red"
+      placeholder="Enter your email"
       formControlName="username" />
-    <mat-icon matSuffix>user</mat-icon>
+    <mat-icon svgIcon="user_toolbar"></mat-icon>
   </mat-form-field>
 
   <!-- Password -->
   <mat-form-field
     appearance="outline">
-    <mat-label>Contraseña</mat-label>
+    <mat-label>Password</mat-label>
     <input
+      style="width:calc(100% - 24px)"
       type="password"
       matInput
-      placeholder="contraseña"
+      placeholder="password"
       formControlName="password" />
-    <mat-icon matSuffix>password</mat-icon>
+    <mat-icon svgIcon="user_password"></mat-icon>
   </mat-form-field>
 
   <!-- LOGIN button -->

@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   envData: {
-    portal:      'Desarrollo',
+    mode:      'Desarrollo',
     loginServer:  'http://localhost:3000',
   }
 };

@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   envData: {
-    portal:      "QA",
+    mode:      "QA",
     loginServer: "http://localhost:3000",
   }
 };
