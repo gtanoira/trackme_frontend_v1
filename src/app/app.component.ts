@@ -2,7 +2,7 @@
   Este componente es el principal del sistema y muestra la página ppal del portal y el
   esquema de menúes
 */
-import { Component, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material';
@@ -20,7 +20,7 @@ import { environment } from '../environments/environment';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
 
   formErrorMessage: string;
   // Toolbar variables

@@ -94,13 +94,13 @@ h1, h2, h3, h4 {
 */
 @font-face {
   font-family: RajdhaniRegular;
-  src: url("assets/fonts/RajdhaniRegular.woff") format("woff"), url("assets/fonts/RajdhaniRegular.ttf")  format("truetype");
+  src: url("/assets/fonts/RajdhaniRegular.woff") format("woff"), url("/assets/fonts/RajdhaniRegular.ttf")  format("truetype");
 }
 @font-face {
   font-family: RajdhaniBold;
-  src: url("assets/fonts/RajdhaniBold.woff") format("woff"), url("assets/fonts/RajdhaniBold.ttf")  format("truetype");
+  src: url("/assets/fonts/RajdhaniBold.woff") format("woff"), url("/assets/fonts/RajdhaniBold.ttf")  format("truetype");
 }
 @font-face {
   font-family: RajdhaniMedium;
-  src: url("assets/fonts/RajdhaniMedium.woff") format("woff"), url("assets/fonts/RajdhaniMedium.ttf")  format("truetype");
+  src: url("/assets/fonts/RajdhaniMedium.woff") format("woff"), url("/assets/fonts/RajdhaniMedium.ttf")  format("truetype");
 }
