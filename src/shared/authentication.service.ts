@@ -5,10 +5,13 @@
    a través del LDAP.
 */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, throwError, never } from 'rxjs';
+import { catchError, map, mergeMap, flatMap, mergeMapTo, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+
+// Libraries
+import * as jwt_decode from 'jwt-decode';
 
 // Models
 import { User } from '../models/user';
@@ -39,14 +42,44 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
+  // HTTP reqeust to obtain the user data
+  getUserDataFromApi(userId: number) {
+    return this.http.get<any>(
+      `${environment.envData.loginServer}/api/v1/users/${userId}.json`
+    ).pipe(
+      tap(
+        data => {
+          // Read the user data and store them in the localStorage
+          try {
+            const userData = {
+              id:             data.id,
+              email:          data.email,
+              firstName:      data.first_name,
+              lastName:       data.last_name,
+              fullName:       `${data.first_name} ${data.last_name}`,
+              authorizations: (data.authorizations === null) ? {} : JSON.parse(data.authorizations)
+            };
+
+            // store user details in local storage to keep user logged in between page refreshes
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+            this.currentUserSubject.next(userData);
+
+          } catch (e) {
+            throwError('TRK-0008(E): the user data received from the backend is incorrect');
+          }
+        }
+      )
+    );
+  }
+
   // LOGIN y AUTENTICACION del usuario que se quiere loguear
   login(username: string, password: string): Observable<any> {
+
     // Headers
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json;charset=utf-8'
-      })
-    };
+    const httpOptions = new HttpHeaders({
+      'Content-Type': 'application/json;charset=utf-8'
+    });
+
     // Body
     const loginData = {
       auth: {
@@ -54,55 +87,55 @@ export class AuthenticationService {
         password: password
       }
     };
-    return this.http.post<any>(`${environment.envData.loginServer}/user_token`, loginData, httpOptions)
+
+    // HTTP request to obtain JWT Token
+    const getJwtToken = this.http.post<any>(
+      `${environment.envData.loginServer}/user_token`,
+      loginData,
+      {headers: httpOptions}
+    ).pipe(
+      map(
+        jwtToken => {
+
+          // Store token in sessionStorage
+          sessionStorage.setItem('jwtToken', jwtToken['jwt']);
+
+          // Decode JWT token
+          const tokenDecoded = jwt_decode(jwtToken['jwt']);
+
+          // Get UserId
+          return tokenDecoded['sub'];
+        }
+      )
+    );
+
+    // Authenticate user
+    return getJwtToken
       .pipe(
-        map(
-          data => {
-            // login successful, get the user data
-            if (data) {
-              // Read the user data and store them in the localStorage
-              try {
-                const user: User = {
-                  id:             data.id,
-                  email:          data.email,
-                  firstName:      data.first_name,
-                  lastName:       data.last_name,
-                  fullName:       `${data.first_name} ${data.last_name}`,
-                  authorizations: (data.authorizations) ? {} : JSON.parse(data.authorizations)
-                }
-
-                // store user details in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.currentUserSubject.next(user);
-
-              } catch (e) {
-                this.errorMessageService.changeErrorMessage('TRK-0008(E): the user data received from the backend is incorrect');
-                return null;
-              }
-            }
-            return data;
-          }
+        mergeMap(
+          userId => this.getUserDataFromApi(userId)
         ),
-        catchError(
+        catchError (
           err => {
             if (err.statusText === 'Unknown Error') {
-              return throwError(`API-0011(E): no se pudo acceder la api ${err.url}`);
+              return throwError(`TRK-0010(E): cannot reach API ${err.url}. Error: ${err.error.message}`);
             } else {
-              return throwError(err.error.message);
+              // Check by status code
+              switch (err.status) {
+                case 400: { return throwError('TRK-0012(E): bad request to LOGIN server.'); break; }
+                default: { return throwError('TRK-0011(E): the username or password are incorrect.'); break; }
+              }
             }
           }
         )
-
-    );
+      );
   }
 
   logout() {
     // Remover los datos del usuario del LocalStorage
     localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('jwtToken');
     this.currentUserSubject.next(null);
-    // Cerrar la sesion en el Login Central
-    this.http.get<any>(`${environment.envData.loginServer}/api2/logout`)
-      .subscribe();
     // Ir al Login
     this.router.navigate(['/login']);
   }

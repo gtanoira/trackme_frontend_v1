@@ -19,8 +19,10 @@ export class AuthGuard implements CanActivate {
     const currentUser = this.authenticationService.currentUserValue;
     // Chequear que el usuario exista
     if (currentUser) {
+
       // Chequear que la ruta posea un programId para permitr el acceso
       if (route.data.idProgram) {
+
         if (route.data.idProgram === 'homePage') {
           // Ir a la Home Page o Menú Principal
           return true;

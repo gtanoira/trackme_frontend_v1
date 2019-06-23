@@ -18,17 +18,19 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    // Agregar en header "Authorization Bearer ..."
-    if (this.authenticationService.currentUserValue && req.url.includes('/api')) {
-      const userData = JSON.parse(localStorage.getItem('currentUser'));
-      const sessionKey = userData.sessionKey;
+    // Agregar en header "Authorization jwt ..."
+    if (req.url.includes('/api')) {
+      const token = sessionStorage.getItem('jwtToken');
 
-      if (sessionKey) {
+      if (token) {
         const newReq = req.clone({
-          headers: req.headers.set('Authorization', `Bearer ${sessionKey}`)
+          headers: req.headers.set(
+            'Authorization', `jwt ${token}`
+          )
         });
         return next.handle(newReq);
       }
-    }    return next.handle(req);
+    }
+    return next.handle(req);
   }
 }

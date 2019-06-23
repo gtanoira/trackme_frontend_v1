@@ -67,7 +67,8 @@
   border: 0.7px solid darkblue;
 }
 .grid-item--red {
-  background: linear-gradient(45deg, transparent 40%, red);
+  /* background: linear-gradient(45deg, transparent 40%, red); */
+  background: #ff00007a;
   border: 0.7px solid darkred;
 }
 .grid-item--green {
@@ -79,7 +80,8 @@
   border: 0.7px solid darksalmon;
 }
 .grid-item--violet {
-  background: linear-gradient(45deg, transparent 40%, violet);
+  /* background: linear-gradient(45deg, transparent 40%, violet);  */
+  background: violet;
   border: 0.7px solid darkviolet;
 }
 
@@ -109,8 +111,9 @@
 }
 
 .group-btn--red {
-  background: linear-gradient(45deg, transparent 40%, red);
-  border: 0.7px solid #efadac;
+  /* background: linear-gradient(45deg, transparent 40%, red); */
+  background: #ff00007a;
+  border: 0.7px solid red;
 }
 .group-btn--red:hover {
   box-shadow: 0px 0px 10px 2px  red;
@@ -133,7 +136,8 @@
 }
 
 .group-btn--violet {
-  background: linear-gradient(45deg, transparent 40%, violet);
+  /* background: linear-gradient(45deg, transparent 40%, violet); */
+  background: violet;
   border: 0.7px solid darkviolet;
 }
 .group-btn--violet:hover {
@@ -141,7 +145,8 @@
 }
 
 .group-btn--black {
-  background: linear-gradient(45deg, transparent 40%, black);
+  /* background: linear-gradient(45deg, transparent 40%, black); */
+  background: #837878;
   border: 0.7px solid black;
 }
 .group-btn--black:hover {

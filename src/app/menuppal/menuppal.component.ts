@@ -36,7 +36,7 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
     stagger: 80,
     transitionDuration: '0.8s'
   };
-  // Instanciar la clase Isotope
+  // Instantiate the isotope class
   public isotope: any;
 
   constructor (
@@ -47,33 +47,31 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    // Armar el menu para el usuario
+    // Create the user menu
     this.authorizationService.createUsermenu()
       .subscribe(
         data => {
           this.bricks = data;
-          console.log('*** BRICK-DATA:', this.bricks);
 
-          // Armar el array de Grupos
+          // Create the group programs array
           this.bricks.forEach(mnuButton => {
-            // Determinar si el grupo ya existe
+            // Check if the group exists
             let groupExists = false;
             for (const group of this.mnuGroups) {
-              if (group.name === mnuButton.group) {
+              if (group.name === mnuButton.pgmGroup) {
                 groupExists = true;
                 break;
               }
             }
             if (groupExists === false) {
               this.mnuGroups.push({
-                name: mnuButton.group,
+                name: mnuButton.pgmGroup,
                 color: mnuButton.color
               });
             }
           });
         },
         err => {
-          console.log('*** ERROR 4', err);
           this.errorMessageService.changeErrorMessage(err);
         }
       );
@@ -89,7 +87,7 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
     this.router.navigate([`/${pgmId}`]);
   }
 
-  // Filtrar los menúes por GrupoId
+  // Filter menu buttons by GROUP PROGRAM
   onFilter(group) {
     this.isotope.arrange({
       // item element provided as argument

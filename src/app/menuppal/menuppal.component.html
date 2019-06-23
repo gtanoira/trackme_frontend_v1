@@ -16,10 +16,10 @@
   class="grid">
   <div
     *ngFor="let brick of bricks"
-    class="grid-item grid-item--{{brick.color}} {{brick.group}}"
+    class="grid-item grid-item--{{brick.color}} {{brick.pgmGroup}}"
     (click)="runProgram(brick.pgmId)">
     <div class="brick-alias brick-alias--{{brick.color}}">{{brick.alias}}</div>
-    <div class="brick-group">{{brick.group}}</div>
+    <div class="brick-group">{{brick.pgmGroup}}</div>
     <div class="brick-title">{{brick.title}}</div>
   </div>
 </div>

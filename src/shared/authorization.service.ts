@@ -3,13 +3,6 @@
   {
     "programId_(i)": {
       // El objecto "menuppal" se acompaña para indicar al programa que lo llamó cómo
-      "menuppal": {
-        "id": <number>,
-        "alias": <string>,
-        "title": <string>,
-        "group": <string>,
-        "color": <string>
-      },
       "componentId_(i)": {
         <propertyKey>: <propertyValue>
         "access":      "off",
@@ -197,12 +190,21 @@ export class AuthorizationService {
   }
 
   // Esta rutina obtiene los menúes que el usuario activo puede usar
+  /*
+  "menuppal": {
+    "pgmId": <number>,
+    "alias": <string>,
+    "title": <string>,
+    "pgmGroup": <string>,
+    "color": <string>
+  },
+  */
   createUsermenu(): Observable<any> {
 
     let pgmsUser = [];  // todos los programas que el usuario tiene acceso
     const mnuUser = [] as Menues[];  // Menú ppal. del usuario
 
-    // Obtener los datos del usuario
+    // Obtener los datos del usuario: this.userData and this.userAuth
     this.getUserAuthorizations();
 
     if (this.userAuth) {
@@ -210,8 +212,8 @@ export class AuthorizationService {
       // Obtener los IDs de los programas
       pgmsUser = Object.keys(this.userAuth);
 
-      // Obtener la info de todos los programa de la app PortalAdmin II
-      return this.http.get<Menues[]>(`${environment.envData.loginServer}/api2/menues/portaladmin_v2/index/`)
+      // Get from backend all the app menu structure
+      return this.http.get<any>(`${environment.envData.loginServer}/api/v1/menues.json`)
         .pipe(
           map(
             pgmsApp => {
@@ -224,15 +226,12 @@ export class AuthorizationService {
                   }
                 }
               );
-              console.log('*** createmenu OK:', mnuUser);
               return mnuUser;
             }
           ),
-          // 1ro.: arrojar el error encontrado
           catchError(
             error => {
-              console.log('*** catch1:', error);
-              return throwError(`API-0011(E): error al llamar a http://<loginServer>/api2/menues/<appId>/index/ - Error: ${error.message}`);
+              return throwError(`API-0011(E): error al llamar a http://<loginServer>/api/v1/menues - Error: ${error.message}`);
             }
           )
          );
