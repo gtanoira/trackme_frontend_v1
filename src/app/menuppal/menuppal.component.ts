@@ -37,7 +37,7 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
     transitionDuration: '0.8s'
   };
   // Instantiate the isotope class
-  public isotope: any;
+  isotope: any;
 
   constructor (
     private authorizationService: AuthorizationService,
@@ -88,11 +88,11 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
   }
 
   // Filter menu buttons by GROUP PROGRAM
-  onFilter(group) {
+  onFilter(pgmGroup) {
     this.isotope.arrange({
       // item element provided as argument
-      filter: (group === 'all') ? '*' : `.${group}`
+      filter: (pgmGroup === 'all') ? '*' : `.${pgmGroup}`
     });
-    this.isotope.arrange();
+    //this.isotope.arrange();
   }
 }

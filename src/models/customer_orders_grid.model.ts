@@ -1,7 +1,7 @@
 // Models defined for Database Tables
 
 // Table: customer_orders
-export interface CustordersShowModel {
+export interface CustomerOrdersGridModel {
   id: number;
   name: string;
   orderNo: number;

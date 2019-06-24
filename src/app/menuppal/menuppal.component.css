@@ -13,7 +13,7 @@
   color: darkgreen!important;
 }
 .brick-alias--coral {
-  color: darksalmon!important;
+  color: #fd5c21!important;
 }
 .brick-alias--violet {
   color: darkviolet!important;
@@ -63,7 +63,8 @@
 }
 
 .grid-item--blue {
-  background: linear-gradient(45deg, transparent 40%, blue);
+  /* background: linear-gradient(45deg, transparent 40%, blue); */
+  background: #8180d3;
   border: 0.7px solid darkblue;
 }
 .grid-item--red {
@@ -72,12 +73,14 @@
   border: 0.7px solid darkred;
 }
 .grid-item--green {
-  background: linear-gradient(45deg, transparent 40%, green);
+  /* background: linear-gradient(45deg, transparent 40%, green); */
+  background: green;
   border: 0.7px solid darkgreen;
 }
 .grid-item--coral {
-  background: linear-gradient(45deg, transparent 40%, coral);
-  border: 0.7px solid darksalmon;
+  /* background: linear-gradient(45deg, transparent 40%, coral); */
+  background: darksalmon;
+  border: 0.7px solid #fd5c21;
 }
 .grid-item--violet {
   /* background: linear-gradient(45deg, transparent 40%, violet);  */
@@ -103,7 +106,8 @@
   width: 100px;
 }
 .group-btn--blue {
-  background: linear-gradient(45deg, transparent 40%, blue);
+  /* background: linear-gradient(45deg, transparent 40%, blue); */
+  background: #8180d3;
   border: 1px solid darkblue;
 }
 .group-btn--blue:hover {
@@ -120,7 +124,8 @@
 }
 
 .group-btn--green {
-  background: linear-gradient(45deg, transparent 40%, green);
+  /* background: linear-gradient(45deg, transparent 40%, green); */
+  background: green;
   border: 0.7px solid darkgreen;
 }
 .group-btn--green:hover {
@@ -128,11 +133,12 @@
 }
 
 .group-btn--coral {
-  background: linear-gradient(45deg, transparent 40%, coral);
-  border: 0.7px solid darksalmon;
+  /* background: linear-gradient(45deg, transparent 40%, coral); */
+  background: darksalmon;
+  border: 0.7px solid #fd5c21;
 }
 .group-btn--coral:hover {
-  box-shadow: 0px 0px 10px 2px  coral;
+  box-shadow: 0px 0px 10px 2px  #fd5c21;
 }
 
 .group-btn--violet {

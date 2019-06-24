@@ -34,6 +34,7 @@ import { AuthInterceptor } from './_helpers/auth.interceptor';
 
 // Componentes
 import { AppComponent } from './app.component';
+import { CustomerOrdersGridComponent } from './customer_orders/customer_orders_grid.component';
 import { LoginComponent } from './login/login.component';
 import { MenuppalComponent } from './menuppal/menuppal.component';
 import { routing } from './app.routing';
@@ -41,6 +42,7 @@ import { routing } from './app.routing';
 @NgModule({
   declarations: [
     AppComponent,
+    CustomerOrdersGridComponent,
     LoginComponent,
     MenuppalComponent,
     NumberFormatterDirective,
