@@ -61,6 +61,16 @@ export class AppComponent implements OnInit {
       'user_password',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/lock.svg')
     );
+    // Data-Table
+    this.matIconRegistry.addSvgIcon(
+      'data-table',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/data-table.svg')
+    );
+    // Form
+    this.matIconRegistry.addSvgIcon(
+      'form',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/form.svg')
+    );
 
     // Subscribir a los errores del módulo, para que sean mostrados en la pantalla
     this.errorMessageService.formCurrentMessage

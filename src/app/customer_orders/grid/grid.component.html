@@ -1,0 +1,10 @@
+  <ag-grid-angular
+    class="ag-theme-balham wrapper"
+    #customerOrdersGrid
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [overlayLoadingTemplate]="overlayLoadingTemplate"
+    [rowData]="rowData"
+    [frameworkComponents]="frameworkComponents"
+    (gridReady)="onGridReady($event)">
+  </ag-grid-angular>

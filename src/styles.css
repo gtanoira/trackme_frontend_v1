@@ -15,12 +15,12 @@
 */
 html,
 body {
-  height: 100%;
+  max-height: 100vh;
   max-width: 1920px;
 }
 
 body {
-  min-height: 100%;
+  min-height: 100vh;
   background-color: #e3e3c8;
 }
 
@@ -38,11 +38,24 @@ h1, h2, h3, h4 {
   width: 100%;
 }
 
+.wrapper {
+  height: max-content;
+  /* height: inherit!important; */
+}
+
 /* *************************************************************************************
     Angular Material customizations
 */
 .mat-card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.19)!important;
+}
+
+.mat-tab-group {
+  height: max-content;
+}
+
+.mat-tab-body-wrapper {
+  height: inherit;
 }
 
 .ng-valid[required],

@@ -23,6 +23,9 @@ import {
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatRadioModule } from '@angular/material/radio';
 
+// External Libraries
+import { DynamicModule } from 'ng-dynamic-component';
+
 // Shared Services
 import { AuthenticationService } from '../shared/authentication.service';
 import { ErrorMessageService } from '../shared/error-message.service';
@@ -34,20 +37,27 @@ import { AuthInterceptor } from './_helpers/auth.interceptor';
 
 // Componentes
 import { AppComponent } from './app.component';
-import { CustomerOrdersGridComponent } from './customer_orders/customer_orders_grid.component';
+import { routing } from './app.routing';
+// Authentication & Authorization
 import { LoginComponent } from './login/login.component';
 import { MenuppalComponent } from './menuppal/menuppal.component';
-import { routing } from './app.routing';
+// Customer Orders Components & Services
+import { CustomerOrdersTabsComponent } from './customer_orders/customer_orders_tabs.component';
+import { COrdersGridComponent } from './customer_orders/grid/grid.component';
+import { CustomerOrdersService } from '../shared/customer_orders.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CustomerOrdersGridComponent,
-    LoginComponent,
-    MenuppalComponent,
     NumberFormatterDirective,
     OnlyNumbersDirective,
     ToUppercaseDirective,
+    // Authentication & Authorization
+    LoginComponent,
+    MenuppalComponent,
+    // Customer Orders
+    CustomerOrdersTabsComponent,
+    COrdersGridComponent
   ],
   imports: [
     AgGridModule.withComponents([]),
@@ -71,12 +81,15 @@ import { routing } from './app.routing';
     MatToolbarModule,
     ReactiveFormsModule,
     routing,
+    // Customer Orders
+    DynamicModule.withComponents([CustomerOrdersTabsComponent, COrdersGridComponent])
   ],
   exports: [
     OnlyNumbersDirective,
   ],
   providers: [
     AuthenticationService,
+    CustomerOrdersService,
     ErrorMessageService,
     HttpClientModule,
     { provide: HTTP_INTERCEPTORS,
@@ -85,7 +98,7 @@ import { routing } from './app.routing';
     },
     { provide: MAT_DATE_LOCALE,
       useValue: 'es-SP'
-    },
+    }
   ],
   bootstrap: [AppComponent]
 })

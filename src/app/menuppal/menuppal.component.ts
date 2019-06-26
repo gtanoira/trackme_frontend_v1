@@ -12,9 +12,8 @@ import { ErrorMessageService } from '../../shared/error-message.service';
 import * as Isotope from 'isotope-layout';
 
 @Component({
-  selector: 'app-main',
   templateUrl: './menuppal.component.html',
-  styleUrls: ['./menuppal.component.css']
+  styleUrls: ['./menuppal.component.css'],
 })
 export class MenuppalComponent implements OnInit, AfterViewInit {
 

@@ -25,6 +25,7 @@
     "@angular/router": "^8.0.1",
     "ag-grid-angular": "^21.0.1",
     "ag-grid-community": "^21.0.1",
+    "ag-grid-enterprise": "^21.0.1",
     "core-js": "^2.5.4",
     "isotope-layout": "^3.0.6",
     "jwt-decode": "^2.2.0",

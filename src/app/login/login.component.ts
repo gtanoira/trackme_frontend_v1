@@ -10,9 +10,6 @@ import { ErrorMessageService } from '../../shared/error-message.service';
 @Component({
   templateUrl: 'login.component.html',
   styleUrls: ['./login.component.css'],
-  host: {
-    class: 'full-width'
-  }
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;

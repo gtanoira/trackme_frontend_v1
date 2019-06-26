@@ -36,6 +36,7 @@
 .grid {
   /* background: #EEE; */
   max-width: 1200px;
+  height: 100%!important;
   margin: auto;
 }
 

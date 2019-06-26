@@ -1,0 +1,46 @@
+<mat-tab-group
+  id="tab-group"
+  (selectedIndexChange)="tabSelected.setValue($event)">
+
+  <!-- TAB header -->
+  <mat-tab
+    *ngFor="let tab of cOrdersTabs"
+    label="{{tab.label}}" isActive="true">
+
+    <ng-template
+      mat-tab-label>
+      {{tab.label}}&nbsp;&nbsp;
+      <small><button
+        class="close"
+        (click)="removeTab(tab)">
+        &times;
+      </button></small>
+    </ng-template>
+
+    <!-- Component to inject into tab -->
+    <ng-container
+      [ngComponentOutlet]="tab.component",
+      [ndcDynamicInputs]="tab.inputs">
+    </ng-container>
+  </mat-tab>
+
+  <!-- BUTTONS to add to the TAB header at most right position-->
+  <!--  Add GRID tab  -->
+  <mat-tab #addGrid disabled>
+    <ng-template mat-tab-label>
+      <button mat-icon-button (click)="addCOrdersGridTab()">
+        <mat-icon svgIcon="data-table"></mat-icon>
+      </button>
+    </ng-template>
+  </mat-tab>
+
+  <!--  Add CUSTOMER ORDER FORM tab  -->
+  <mat-tab disabled>
+    <ng-template mat-tab-label>
+      <button mat-icon-button (click)="addCOrdersFormTab()">
+        <mat-icon svgIcon="form"></mat-icon>
+      </button>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
