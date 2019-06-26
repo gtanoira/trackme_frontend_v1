@@ -19,7 +19,7 @@ import { COrdersGridComponent } from './grid/grid.component';
   templateUrl: './customer_orders_tabs.component.html',
   styleUrls:   ['./customer_orders_tabs.component.css'],
   host: {
-    class: 'wrapper'
+    style: 'height: calc(100% - 60px);'
   }
 })
 export class CustomerOrdersTabsComponent {

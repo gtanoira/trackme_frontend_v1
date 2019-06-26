@@ -15,11 +15,12 @@
 */
 html,
 body {
-  max-height: 100vh;
+  max-height: 100%;
   max-width: 1920px;
 }
 
 body {
+  height: 100vh;
   min-height: 100vh;
   background-color: #e3e3c8;
 }
@@ -39,8 +40,8 @@ h1, h2, h3, h4 {
 }
 
 .wrapper {
-  height: max-content;
-  /* height: inherit!important; */
+  height: inherit!important;
+  min-height: inherit!important;
 }
 
 /* *************************************************************************************
@@ -51,7 +52,7 @@ h1, h2, h3, h4 {
 }
 
 .mat-tab-group {
-  height: max-content;
+  height: inherit;
 }
 
 .mat-tab-body-wrapper {
