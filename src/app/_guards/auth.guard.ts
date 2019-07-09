@@ -24,21 +24,36 @@ export class AuthGuard implements CanActivate {
       if (route.data.idProgram) {
 
         if (route.data.idProgram === 'homePage') {
+          // Set Program Title
+          this.errorMessageService.changeAppProgramTitle('Home');
           // Ir a la Home Page o Menú Principal
           return true;
         } else {
           // Chequear que el usuario tenga acceso al programa
-          return this.authorizationService.programAccess(route.data.idProgram);
+          if (this.authorizationService.programAccess(route.data.idProgram)) {
+            // YES: has access
+            // Set Program Title
+            this.errorMessageService.changeAppProgramTitle(route.data.nameProgram);
+            return true;
+          } else {
+            // NO: access
+            this.errorMessageService.changeErrorMessage(`API-0013(E): you don't have access to this program ${route.data.idProgram}`);
+            return false;
+          }
         }
 
       } else {
         // NO ACCESS, role not authorised so redirect to home page
         this.errorMessageService.changeErrorMessage(`API-0027(E): no posee acceso a la APP ${route.data.nameProgram}`);
+        // Set Program Title
+        this.errorMessageService.changeAppProgramTitle('Login');
         this.router.navigate(['/login']);
         return false;
       }
 
     } else {
+      // Set Program Title
+      this.errorMessageService.changeAppProgramTitle('Login');
       // User does not exist, go to login
       this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
       return true;

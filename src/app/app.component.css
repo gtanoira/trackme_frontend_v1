@@ -21,6 +21,10 @@
   font-family: RajdhaniRegular;
 }
 
+h5.programTitle {
+  font-style: italic;
+}
+
 .mat-button {
   padding-left: 7px;
   padding-right: 7px;

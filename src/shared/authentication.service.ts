@@ -32,12 +32,12 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router
   ) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(sessionStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
   // GETTERS
-  // Get the user info store on the browser LocalStorage
+  // Get the user info store on the browser sessionStorage
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
   }
@@ -49,7 +49,7 @@ export class AuthenticationService {
     ).pipe(
       tap(
         data => {
-          // Read the user data and store them in the localStorage
+          // Read the user data and store them in the sessionStorage
           try {
             const userData = {
               id:             data.id,
@@ -61,7 +61,7 @@ export class AuthenticationService {
             };
 
             // store user details in local storage to keep user logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(userData));
+            sessionStorage.setItem('currentUser', JSON.stringify(userData));
             this.currentUserSubject.next(userData);
 
           } catch (e) {
@@ -75,11 +75,6 @@ export class AuthenticationService {
   // LOGIN y AUTENTICACION del usuario que se quiere loguear
   login(username: string, password: string): Observable<any> {
 
-    // Headers
-    const httpOptions = new HttpHeaders({
-      'Content-Type': 'application/json;charset=utf-8'
-    });
-
     // Body
     const loginData = {
       auth: {
@@ -91,8 +86,7 @@ export class AuthenticationService {
     // HTTP request to obtain JWT Token
     const getJwtToken = this.http.post<any>(
       `${environment.envData.loginServer}/user_token`,
-      loginData,
-      {headers: httpOptions}
+      loginData
     ).pipe(
       map(
         jwtToken => {
@@ -132,8 +126,8 @@ export class AuthenticationService {
   }
 
   logout() {
-    // Remover los datos del usuario del LocalStorage
-    localStorage.removeItem('currentUser');
+    // Remover los datos del usuario del sessionStorage
+    sessionStorage.removeItem('currentUser');
     sessionStorage.removeItem('jwtToken');
     this.currentUserSubject.next(null);
     // Ir al Login

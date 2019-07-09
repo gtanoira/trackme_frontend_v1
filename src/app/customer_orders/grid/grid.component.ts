@@ -1,19 +1,18 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-// import { TabGroup } from '../app-tabs/tab-group.component';
 
 import { GridOptions } from 'ag-grid-community';
 //import { LicenseManager } from 'ag-grid-enterprise';
 //LicenseManager.setLicenseKey('Evaluation_License_Valid_Until__24_November_2018__MTU0MzAxNzYwMDAwMA==a39c92782187aa78196ed1593ccd1527');
 
 // Models
-import { CustomerOrdersModel } from '../../../models/customer_orders.model';
+import { CustomerOrderModel } from '../../../models/customer_order.model';
 
 // Environment
 import { environment } from '../../../environments/environment';
 
 // Services
-import { CustomerOrdersService } from '../../../shared/customer_orders.service';
+import { CustomerOrderService } from '../../../shared/customer_order.service';
 import { CustomTooltip } from '../../../shared/custom-tooltip.component';
 
 /* ***********************************************************************
@@ -26,6 +25,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 // syntax. However, rollup creates a synthetic default module and we thus need to import it using
 // the `default as` syntax.
 import * as _moment from 'moment';
+import { delay } from 'rxjs/operators';
+import { MatButtonToggleGroupMultiple } from '@angular/material';
 // tslint:disable-next-line:no-duplicate-imports
 // import {default as _rollupMoment} from 'moment';
 const moment = _moment;
@@ -53,7 +54,7 @@ export const MY_FORMATS = {
     class: 'wrapper'
   }
 })
-export class COrdersGridComponent implements OnInit {
+export class COrderGridComponent implements OnInit {
   // @Input() tabGroup: TabGroup;
 
   // ag-grid setup variables
@@ -63,7 +64,7 @@ export class COrdersGridComponent implements OnInit {
   private gridApi;
   private gridColumnApi;
   public  overlayLoadingTemplate;
-  public  rowData: CustomerOrdersModel[];
+  public  rowData: CustomerOrderModel[];
 
   /*
   private onQuickFilterChanged() {
@@ -72,7 +73,7 @@ export class COrdersGridComponent implements OnInit {
   */
 
   constructor(
-    private customerOrdersService: CustomerOrdersService,
+    private customerOrdersService: CustomerOrderService,
     private http: HttpClient,
     private ref: ChangeDetectorRef
   ) {
@@ -80,24 +81,29 @@ export class COrdersGridComponent implements OnInit {
     this.columnDefs = [{
       headerName: 'Client',
       field: 'customerName',
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      width: 210
     }, {
       headerName: 'Order #',
       field: 'orderNo',
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      width: 100
     }, {
       headerName: 'Client PO',
       field: 'custRef',
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      width: 160
     }, {
       headerName: 'SM',
       headerTooltip: 'Shipment Method',
-      field: 'shipmentMethod'
+      field: 'shipmentMethod',
+      width: 50
     }, {
       headerName: 'Date',
       field: 'orderDate',
       sort: 'desc',
       sortingOrder: ['asc', 'desc'],
+      width: 110,
       filter: 'agDateColumnFilter',
       filterParams: {
         suppressAndOrCondition: true,
@@ -122,40 +128,49 @@ export class COrdersGridComponent implements OnInit {
       children: [{
         headerName: 'Name',
         field: 'fromEntity',
-        hide: false
+        hide: false,
+        width: 210
       }, {
         headerName: 'Country',
-        field: 'fromCountryId'
+        field: 'fromCountryId',
+        width: 90
       }, {
         headerName: 'City',
         field: 'fromCity',
-        hide: false
+        hide: false,
+        width: 110
       }]
     }, {
       headerName: 'Consignee',
       children: [{
         headerName: 'Name',
         field: 'toEntity',
-        hide: false
+        hide: false,
+        width: 210
       }, {
         headerName: 'Country',
-        field: 'toCountryId'
+        field: 'toCountryId',
+        width: 90
       }, {
         headerName: 'City',
         field: 'toCity',
-        hide: false
+        hide: false,
+        width: 110
       }]
     }, {
       headerName: 'Status',
-      field: 'orderStatus'
+      field: 'orderStatus',
+      width: 70
     }, {
-      headerName: 'LE',
+      headerName: 'Last Event',
       headerTooltip: 'Last Event',
-      field: 'observations'
+      field: 'observations',
+      width: 230
     }, {
       headerName: 'ETA',
       field: 'eta',
       sortingOrder: ['desc', 'asc'],
+      width: 110,
       filter: 'agDateColumnFilter',
       filterParams: {
         suppressAndOrCondition: true,
@@ -180,6 +195,7 @@ export class COrdersGridComponent implements OnInit {
       headerTooltip: 'Delivery Date',
       field: 'deliveryDate',
       sortingOrder: ['desc', 'asc'],
+      width: 110,
       filter: 'agDateColumnFilter',
       filterParams: {
         suppressAndOrCondition: true,
@@ -202,7 +218,8 @@ export class COrdersGridComponent implements OnInit {
     }];
     this.defaultColDef = {
       sortable: true,
-      tooltipComponent: 'customTooltip'
+      tooltipComponent: 'customTooltip',
+      resizable: true
     };
     this.overlayLoadingTemplate = '<div class="loader-spinner"></div>';
     this.frameworkComponents = {

@@ -1,0 +1,126 @@
+<form
+  class="wrapper form-customer-order"
+  [formGroup]="formData">
+  <div
+    fxLayout="row"
+    fxLayout.sm="column"
+    fxLayout.xs="column"
+    fxLayoutGap="8px">
+
+    <!-- BLOCK GENERAL  -->
+    <mat-card
+      class="mat-card"
+      fxFlex="20%"
+      formGroupName="blkGeneral">
+      <!--  SAVE button  -->
+      <div class="formMenu">
+        <button
+          mat-mini-fab
+          title="Save Order"
+          color=primary
+          (click)="saveOrder(orderId)">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+
+      <h3>Order No. {{ (orderId == null)? 'New' : formData.get('blkGeneral').get('orderNo') && formData.get('blkGeneral').get('orderNo').value }}</h3>
+
+      <mat-form-field>
+        <mat-select
+          formControlName="customerId"
+          placeholder="Client"
+          required>
+          <mat-option
+            *ngFor="let customer of customerOptions"
+            [value]="customer.id">
+            {{ customer.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formData.get('blkGeneral').get('customerId').hasError('required')">
+          The client is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Customer Reference"
+          formControlName="custRef">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select
+          placeholder="Order type"
+          formControlName="orderType"
+          required>
+          <mat-option
+            *ngFor="let order of ordersTypeOptions"
+            [value]="order.id">
+            {{ order.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Applicant name"
+          formControlName="applicantName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Order date"
+          [matDatepicker]="orderDate"
+          formControlName="orderDate"
+          required>
+        <mat-datepicker-toggle matSuffix [for]="orderDate"></mat-datepicker-toggle>
+        <mat-datepicker #orderDate></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select
+          formControlName="shipmentMethod"
+          placeholder="Shipment Method"
+          [errorStateMatcher]="matcher">
+          <mat-option
+            *ngFor="let method of shipmentOptions"
+            [value]="method.id">
+            {{ method.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select
+          formControlName="incoterm"
+          placeholder="Incoterm"
+          [errorStateMatcher]="matcher">
+          <mat-option
+            *ngFor="let method of incotermOptions"
+            [value]="method.id">
+            {{ method.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+
+    <!-- OTHER BLOCKS  -->
+    <mat-card
+      class="mat-card"
+      fxFlex="80%">
+      <!-- Form Tabs  -->
+      <app-custorder-tabs
+        fxFlex
+        [orderId]="orderId"
+        [formData]="formData"
+        [customerOptions]="customerOptions">
+      </app-custorder-tabs>
+    </mat-card>
+
+  </div>
+
+</form>
+
+<ng-template #stillLoading><p>Loading...</p></ng-template>

@@ -1,6 +1,5 @@
 <mat-tab-group
-  id="tab-group"
-  (selectedIndexChange)="tabSelected.setValue($event)">
+  id="tab-group">
 
   <!-- TAB header -->
   <mat-tab
@@ -26,10 +25,10 @@
 
   <!-- BUTTONS to add to the TAB header at most right position-->
   <!--  Add GRID tab  -->
-  <mat-tab #addGrid disabled>
+  <mat-tab #addGrid>
     <ng-template mat-tab-label>
       <button mat-icon-button (click)="addCOrdersGridTab()">
-        <mat-icon svgIcon="data-table"></mat-icon>
+        <mat-icon svgIcon="spreadsheet"></mat-icon>
       </button>
     </ng-template>
   </mat-tab>

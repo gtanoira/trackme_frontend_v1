@@ -26,25 +26,38 @@ import { MatRadioModule } from '@angular/material/radio';
 // External Libraries
 import { DynamicModule } from 'ng-dynamic-component';
 
-// Shared Services
+// Services
 import { AuthenticationService } from '../shared/authentication.service';
+import { AuxiliarTableService } from '../shared/auxiliar_table.service';
+import { CompanyService } from '../shared/company.service';
+import { CountryService } from '../shared/country.service';
+import { CustomerOrderService } from '../shared/customer_order.service';
+import { EntityService } from '../shared/entity.service';
 import { ErrorMessageService } from '../shared/error-message.service';
+import { EventTypeService } from '../shared/event_type.service';
+import { OrderEventService } from '../shared/order_event.service';
+import { WarehouseReceiptService } from '../shared/warehouse_receipt.service';
+
+// Directives
 import { OnlyNumbersDirective, ToUppercaseDirective, NumberFormatterDirective } from '../shared/formatter.directives';
 
 // Interceptors
-// import { ErrorInterceptor } from './_helpers/error.interceptor';
-import { AuthInterceptor } from './_helpers/auth.interceptor';
+import { interceptorProviders } from '../interceptors/interceptors';
 
 // Componentes
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
+
 // Authentication & Authorization
 import { LoginComponent } from './login/login.component';
 import { MenuppalComponent } from './menuppal/menuppal.component';
-// Customer Orders Components & Services
-import { CustomerOrdersTabsComponent } from './customer_orders/customer_orders_tabs.component';
-import { COrdersGridComponent } from './customer_orders/grid/grid.component';
-import { CustomerOrdersService } from '../shared/customer_orders.service';
+
+// Customer Orders Components
+import { CustomerOrderTabsComponent } from './customer_orders/customer_order_tabs.component';
+import { COrderGridComponent } from './customer_orders/grid/grid.component';
+import { COrderFormComponent } from './customer_orders/form/form.component';
+import { COrderFormTabsComponent } from './customer_orders/form/form_tabs/tabs.component';
+import { COrderEventsComponent } from './customer_orders/form/events/events.component';
 
 @NgModule({
   declarations: [
@@ -56,8 +69,11 @@ import { CustomerOrdersService } from '../shared/customer_orders.service';
     LoginComponent,
     MenuppalComponent,
     // Customer Orders
-    CustomerOrdersTabsComponent,
-    COrdersGridComponent
+    CustomerOrderTabsComponent,
+    COrderGridComponent,
+    COrderFormComponent,
+    COrderFormTabsComponent,
+    COrderEventsComponent
   ],
   imports: [
     AgGridModule.withComponents([]),
@@ -82,20 +98,28 @@ import { CustomerOrdersService } from '../shared/customer_orders.service';
     ReactiveFormsModule,
     routing,
     // Customer Orders
-    DynamicModule.withComponents([CustomerOrdersTabsComponent, COrdersGridComponent])
+    DynamicModule.withComponents([
+      CustomerOrderTabsComponent,
+      COrderGridComponent,
+      COrderFormComponent
+    ])
   ],
   exports: [
     OnlyNumbersDirective,
   ],
   providers: [
     AuthenticationService,
-    CustomerOrdersService,
+    AuxiliarTableService,
+    CompanyService,
+    CountryService,
+    CustomerOrderService,
+    EntityService,
     ErrorMessageService,
+    EventTypeService,
     HttpClientModule,
-    { provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
+    interceptorProviders,
+    OrderEventService,
+    WarehouseReceiptService,
     { provide: MAT_DATE_LOCALE,
       useValue: 'es-SP'
     }

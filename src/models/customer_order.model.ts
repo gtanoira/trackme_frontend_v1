@@ -1,7 +1,7 @@
 // Models defined for Database Tables
 
 // Table: customer_orders
-export interface CustomerOrdersModel {
+export interface CustomerOrderModel {
   // Block: GENERAL
   companyId: number;
   customerId: number;

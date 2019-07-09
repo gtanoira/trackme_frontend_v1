@@ -2,18 +2,18 @@ import { Routes, RouterModule } from '@angular/router';
 
 // Importar componentes
 import { LoginComponent } from './login/login.component';
-import { CustomerOrdersTabsComponent } from './customer_orders/customer_orders_tabs.component';
+import { CustomerOrderTabsComponent } from './customer_orders/customer_order_tabs.component';
 import { MenuppalComponent } from './menuppal/menuppal.component';
 import { AuthGuard } from './_guards';
 
 const appRoutes: Routes = [
  {
     path: 'pgmClientOrders',
-    component: CustomerOrdersTabsComponent,
+    component: CustomerOrderTabsComponent,
     canActivate: [AuthGuard],
     data: {
       idProgram:   'pgmClientOrders',
-      nameProgram: 'Client Orders Grid'
+      nameProgram: 'Customer Orders'
     }
   },
   {
@@ -22,7 +22,7 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
     data: {
       idProgram:   'homePage',
-      nameProgram: 'Menú Principal - Home Page'
+      nameProgram: 'Home Page'
     }
   },
   {

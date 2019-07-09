@@ -1,7 +1,7 @@
 // Models defined for Database Tables
 
 // Table: customer_orders
-export interface EventsModel {
+export interface EventModel {
   eventDate: string;
   eventName: string;
   observations: string;

@@ -18,7 +18,7 @@
     }
   }
 
-  El JSON se encuentra en el "localStorage" en la variable "currentUser.authorizations"
+  El JSON se encuentra en el "sessionStorage" en la variable "currentUser.authorizations"
 
   El concepto es que este JSON determina toda la seguiradad de cada programa o app que se maneje en este
   proyecto Angular.
@@ -48,7 +48,7 @@ import { catchError, map } from 'rxjs/operators';
 
 // Models
 import { User } from '../models/user';
-import { Menues } from '../models/menues';
+import { Menues } from '../models/menu';
 
 // Environment
 import { environment } from '../environments/environment';
@@ -67,10 +67,10 @@ export class AuthorizationService {
     private http: HttpClient,
   ) {}
 
-  // Esta rutina obtiene las authorizations del usuario activo a través de LocalStorage
+  // Esta rutina obtiene las authorizations del usuario activo a través de sessionStorage
   getUserAuthorizations() {
     if (this.authenticationService.currentUserValue) {
-      this.userData = JSON.parse(localStorage.getItem('currentUser'));
+      this.userData = JSON.parse(sessionStorage.getItem('currentUser'));
       this.userAuth = this.userData['authorizations'];
     } else {
       this.userData = null;

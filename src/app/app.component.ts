@@ -2,10 +2,8 @@
   Este componente es el principal del sistema y muestra la página ppal del portal y el
   esquema de menúes
 */
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, OnChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMenuModule } from '@angular/material';
 import { MatIconRegistry } from '@angular/material/icon';
 
 // Services
@@ -20,13 +18,16 @@ import { environment } from '../environments/environment';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnChanges {
 
+  // Error Messages from the entire APP
   formErrorMessage: string;
   // Toolbar variables
   toolbarUser   = '';
   toolbarLoginServer  = '';
   toolbarEnvironment = '';
+  // Program Title render in screen
+  currentProgramTitle = 'Home';
 
   constructor(
     public authenticationService: AuthenticationService,
@@ -36,46 +37,57 @@ export class AppComponent implements OnInit {
   ) {
 
     // Definir iconos
-    // Logout
+    // Data-Table
     this.matIconRegistry.addSvgIcon(
-      'logout',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/logout.svg')
+      'data-table',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/data-table.svg')
     );
     // EnvironmentInfo
     this.matIconRegistry.addSvgIcon(
       'env_info',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/information.svg')
     );
+    // Form
+    this.matIconRegistry.addSvgIcon(
+      'form',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/form.svg')
+    );
     // Home
     this.matIconRegistry.addSvgIcon(
       'home_main',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/home_main.svg')
     );
-    // User
+    // Logout
     this.matIconRegistry.addSvgIcon(
-      'user_toolbar',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/avatar.svg')
+      'logout',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/logout.svg')
     );
     // Password
     this.matIconRegistry.addSvgIcon(
       'user_password',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/lock.svg')
     );
-    // Data-Table
+    // SpreadSheet
     this.matIconRegistry.addSvgIcon(
-      'data-table',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/data-table.svg')
+      'spreadsheet',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/spreadsheet.svg')
     );
-    // Form
+    // User
     this.matIconRegistry.addSvgIcon(
-      'form',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/form.svg')
+      'user_toolbar',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/avatar.svg')
     );
 
     // Subscribir a los errores del módulo, para que sean mostrados en la pantalla
     this.errorMessageService.formCurrentMessage
       .subscribe(
         message => this.formErrorMessage = message
+      );
+
+    // Subscribe to the currentProgramTitle, to show program's title on the screen
+    this.errorMessageService.currentProgramTitle
+      .subscribe(
+        message => this.currentProgramTitle = message
       );
 
     // Subscibir el Toolbar user
@@ -92,6 +104,11 @@ export class AppComponent implements OnInit {
     // Toolbar
     this.toolbarLoginServer = environment.envData.loginServer;
     this.toolbarEnvironment = environment.envData.mode;
+  }
+
+  ngOnChanges() {
+    // Set Program Title
+    this.errorMessageService.changeAppProgramTitle('Customer Orders');
   }
 
 }
