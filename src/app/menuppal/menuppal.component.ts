@@ -36,7 +36,7 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
     transitionDuration: '0.8s'
   };
   // Instantiate the isotope class
-  isotope: any;
+  isotope: Isotope;
 
   constructor (
     private authorizationService: AuthorizationService,
@@ -77,9 +77,10 @@ export class MenuppalComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Setear los colores de los botones en base al grupo
-    // Definir un componente Isotope
-    this.isotope = new Isotope('.grid', this.isotopeOptions);
+    // Initialize Isotope component
+    setTimeout(() => {
+      this.isotope = new Isotope('.grid', this.isotopeOptions);
+    }, 2000);
   }
 
   runProgram(pgmId: string) {

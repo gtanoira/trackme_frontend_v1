@@ -1,12 +1,20 @@
-import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, AfterContentInit, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+// Environment
+import { environment } from '../../../environments/environment';
 
 // Services
 import { AuxiliarTableService } from '../../../shared/auxiliar_table.service';
 import { CustomerOrderService } from '../../../shared/customer_order.service';
 import { EntityService } from '../../../shared/entity.service';
 import { ErrorMessageService } from '../../../shared/error-message.service';
+import { HeightService } from 'src/shared/height.service';
+
+// Structures and models
+import { SelectOptions } from '../../../models/select_options';
+import { EntityModel } from '../../../models/entity.model';
 
 /* ***********************************************************************
     DATE formatting settings
@@ -17,10 +25,9 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
 // syntax. However, rollup creates a synthetic default module and we thus need to import it using
 // the `default as` syntax.
-import * as _moment from 'moment';
+import * as moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 // import {default as _rollupMoment} from 'moment';
-const moment = _moment;
 
 // See the Moment.js docs for the meaning of these formats:
 // https://momentjs.com/docs/#/displaying/format/
@@ -29,7 +36,7 @@ export const MY_FORMATS = {
     dateInput: 'DD/MM/YYYY',
   },
   display: {
-    dateInput: 'll',
+    dateInput: 'DD-MMM-YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',
@@ -37,32 +44,17 @@ export const MY_FORMATS = {
 };
 // *********************************************************************
 
-// Structures and models
-import { SelectOptions } from '../../../models/select_options';
-import { EntityModel } from '../../../models/entity.model';
-
-// HTTP options for calling API
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-    // 'Accept': 'text/plain; application/json; text/html;',
-  })
-};
-
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css'],
-  host: {
-    class: 'wrapper'
-  },
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ]
 })
 
-export class COrderFormComponent implements OnInit, AfterContentInit {
+export class COrderFormComponent implements OnInit, AfterViewInit, AfterContentInit {
 
   // Input Parameters
   @Input() orderId: number;     // Order no.: (null): new order / (id):order to edit
@@ -71,7 +63,6 @@ export class COrderFormComponent implements OnInit, AfterContentInit {
   companyOptions: SelectOptions[];
   customerOptions: SelectOptions[];
   // Other fields
-  formMessage = '';
   showFromEntityDropDown = false;
   showToEntityDropDown   = false;
 
@@ -85,14 +76,19 @@ export class COrderFormComponent implements OnInit, AfterContentInit {
   incotermOptions: SelectOptions[] = this.auxiliarTableService.getIncoterms();
 
   // Instantiate FORM data
-  private formData: FormGroup;
+  public formData: FormGroup;
 
-  constructor(private fb: FormBuilder,
-              private http: HttpClient,
-              private errorMessageService: ErrorMessageService,
-              private auxiliarTableService: AuxiliarTableService,
-              private customerOrderService: CustomerOrderService,
-              private entityService: EntityService) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private errorMessageService: ErrorMessageService,
+    private auxiliarTableService: AuxiliarTableService,
+    private customerOrderService: CustomerOrderService,
+    private entityService: EntityService,
+    private heightService: HeightService,
+    private el: ElementRef,
+    private renderer: Renderer2
+   ) {
     // Blank Order (new)
     this.formData = this.newFormData();
   }
@@ -119,7 +115,19 @@ export class COrderFormComponent implements OnInit, AfterContentInit {
         this.customerOptions = data.map(row => row);
       }
     );
+  }
 
+  ngAfterViewInit() {
+    console.log('*** FORM EL:', this.el);
+    // Calculate the component height
+    const componentHeight = this.heightService.setElementHeight(
+      'app-root',
+      ['appHeader', 'appErrorLine'],
+      59,  // offsetHeight
+      530  // minHeight
+    );
+    // Set height to mat-card TAG -> BLOCK GENERAL
+    this.renderer.setStyle(this.el.nativeElement.children[0].children[0], 'height', `${componentHeight}px`);
   }
 
   ngAfterContentInit() {
@@ -128,6 +136,9 @@ export class COrderFormComponent implements OnInit, AfterContentInit {
       this.formData.get('blkGeneral').get('companyId').disable();
     }
   }
+
+  // GETTERS: convenience getter for easy access to form fields
+  get orderNo() { return this.formData.get('blkGeneral').get('orderNo'); }
 
   // Creates a empty FormGroup
   newFormData(): FormGroup {
@@ -283,96 +294,38 @@ export class COrderFormComponent implements OnInit, AfterContentInit {
   saveOrder(orderId) {
 
     // Clear message
-    this.formMessage = '';
+    this.errorMessageService.changeErrorMessage('');
+    // Save order
+    this.customerOrderService.updCustomerOrderById(orderId, this.formData).subscribe(
+      data => {
+        console.log('*** DATA:', data);
 
-    // Save form data
-    const vformData = this.formData.value;
-    // Map data before send
-    const customerOrder = {
-      companyId:     vformData.blkGeneral.companyId,
-      customerId:    vformData.blkGeneral.customerId,
-      orderNo:       vformData.blkGeneral.orderNo,
-      orderId:       vformData.blkGeneral.orderId,
-      orderDate:     vformData.blkGeneral.orderDate,
-      observations:  vformData.blkGeneral.observations,
-      custRef:       vformData.blkGeneral.custRef,
-      orderType:     vformData.blkGeneral.orderType,
-      orderStatus:   vformData.blkGeneral.orderStatus,
-      applicantName: vformData.blkGeneral.applicantName,
-      oldOrderNo:    vformData.blkGeneral.oldOrderNo,
-      incoterm:      vformData.blkGeneral.incoterm,
-      shipmentMethod: vformData.blkGeneral.shipmentMethod,
-      eta:           vformData.blkGeneral.eta,
-      deliveryDate:  vformData.blkGeneral.deliveryDate,
-      eventsScope:   vformData.blkGeneral.eventsScope,
-      thirdPartyId:  vformData.blkGeneral.thirdPartyId,
-      fromEntity:    vformData.blkFrom.fromEntity,
-      fromAddress1:  vformData.blkFrom.fromAddress1,
-      fromAddress2:  vformData.blkFrom.fromAddress2,
-      fromCity:      vformData.blkFrom.fromCity,
-      fromZipcode:   vformData.blkFrom.fromZipcode,
-      fromState:     vformData.blkFrom.fromState,
-      fromCountryId: vformData.blkFrom.fromCountryId,
-      toEntity:      vformData.blkTo.toEntity,
-      toAddress1:    vformData.blkTo.toAddress1,
-      toAddress2:    vformData.blkTo.toAddress2,
-      toCity:        vformData.blkTo.toCity,
-      toZipcode:     vformData.blkTo.toZipcode,
-      toState:       vformData.blkTo.toState,
-      toCountryId:   vformData.blkTo.toCountryId
-    };
-
-    if (this.formData.invalid) {
-
-      this.formMessage = 'TRK-0002(E): the form is invalid. Please check required fields and retry.';
-
-    } else {
-
-      if (vformData.formProperties.mode === 'INSERT') {
-
-        /*
-           INSERT new Order into the DBase
-        */
-        // Add the new customer order in the DBase
-        this.http.post('/api/customer_orders.json', customerOrder, httpOptions)
-          .subscribe(
-            data => {
-              this.formMessage = data['message'];
-              setTimeout(() => { this.formMessage = ''; }, 10000);   // delete the message after 10 secs.
-              // Re-set the order to QUERY modality
-              this.formData.value.formProperties.mode = 'QUERY';
-              this.formData.get('blkGeneral').get('customerId').disable();
-              this.formData.value.blkGeneral.customerId = vformData.blkGeneral.customerId;
-              this.formData.get('blkGeneral').get('companyId').disable();
-              this.formData.value.blkGeneral.companyId = vformData.blkGeneral.companyId;
-              this.formData.get('blkGeneral').get('orderNo').setValue(data['orderNo']);
-              this.formData.get('blkGeneral').get('orderId').setValue(data['orderId']);
-              this.orderId = data['orderId'];
-            },
-            error => {
-              this.formMessage = `TRK-0003(E): ${error['message']} // ${error['extraMsg']}`;
-            }
+        // Re-set the order for QUERY modality
+        if (this.formData.value.formProperties.mode === 'INSERT') {
+          this.formData.value.formProperties.mode = 'QUERY';
+          this.formData.get('blkGeneral').get('customerId').disable();
+          // this.formData.value.blkGeneral.customerId = vformData.blkGeneral.customerId;
+          this.formData.get('blkGeneral').get('companyId').disable();
+          // this.formData.value.blkGeneral.companyId = vformData.blkGeneral.companyId;
+          this.formData.get('blkGeneral').get('orderNo').setValue(data['orderNo']);
+          this.orderId = data['orderId'];
+          // Output message
+          this.errorMessageService.changeErrorMessage(
+            `The new customer order #${this.orderNo.value} was created succesfuly`
           );
-
-      } else {
-
-        /*
-           UPDATE a existing Order to the DBase
-        */
-        // Add the new customer order in the DBase
-        this.http.patch(`/api/customer_orders/${orderId}.json`, customerOrder, httpOptions)
-          .subscribe(
-            data => {
-              this.formMessage = data['message'];
-              setTimeout(() => { this.formMessage = ''; }, 10000);   // delete the message after 10 secs.
-            },
-            error => {
-              this.formMessage = `TRK-0003(E): ${error['message']}  // ${error['extraMsg']}`;
-            }
+          setTimeout(() => { this.errorMessageService.changeErrorMessage(''); }, 10000);
+        } else {
+          // Output message
+          this.errorMessageService.changeErrorMessage(
+            `The order #${this.orderNo.value} was updated succesfuly`
           );
+          setTimeout(() => { this.errorMessageService.changeErrorMessage(''); }, 10000);
+        }
+      },
+      err => {
+        this.errorMessageService.changeErrorMessage(err);
       }
-
-    }
+    );
 
   }
 

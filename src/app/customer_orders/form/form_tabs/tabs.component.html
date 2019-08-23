@@ -1,11 +1,11 @@
 <mat-tab-group
+  name="appTabsGroup"
   fxFlex
   (selectedIndexChange)="changeTab($event)"
   [formGroup]="formData">
 
   <!-- EVENTS tabs  -->
   <mat-tab
-    fxFlex
     label="Events"
     isActive="true">
     <app-custorder-events
@@ -18,7 +18,6 @@
   <mat-tab
     label="Shipper">
     <div
-      class="containerX"
       fxLayout="column"
       formGroupName="blkFrom">
 
@@ -244,12 +243,19 @@
   <mat-tab
     *ngFor="let tab of dynamicTabs"
     label="{{tab.label}}">
+
     <!-- TAB label -->
     <ng-template
       mat-tab-label>
       {{tab.label}}&nbsp;&nbsp;
-      <small><button *ngIf="tab.remove" class="close" (click)="removeTab(tab)">&times;</button></small>
+      <mat-icon
+        *ngIf="tab.remove"
+        class="mini-icon"
+        (click)="removeTab(tab)"
+        svgIcon="delete_red">
+      </mat-icon>
     </ng-template>
+
     <!-- TAB component -->
     <ndc-dynamic
       [ndcDynamicComponent]="tab.component"
@@ -258,13 +264,19 @@
   </mat-tab>
 
   <!--  Add SHIPMENT button tab  -->
-  <mat-tab #addShip disabled>
+  <mat-tab #addShip>
     <ng-template mat-tab-label>
       <button
-        mat-icon-button
+        style="font-weight: bold"
+        mat-button
+        color="primary"
         title="Add a new Shipment"
         (click)="addShipment()">
-        <mat-icon>add_circle</mat-icon>
+        <mat-icon
+          class="mini-icon"
+          svgIcon="add_green">
+        </mat-icon>
+        &nbsp;SH
       </button>
     </ng-template>
   </mat-tab>
@@ -273,10 +285,16 @@
   <mat-tab #addWR disabled>
     <ng-template mat-tab-label>
       <button
-        mat-icon-button
+        style="font-weight: bold"
+        mat-button
+        color="primary"
         title="Add a new WareHouse Receipt"
         (click)="addWReceipt()">
-        <mat-icon>add_circle</mat-icon>WR
+        <mat-icon
+          class="mini-icon"
+          svgIcon="add_green">
+        </mat-icon>
+        &nbsp;WR
       </button>
     </ng-template>
   </mat-tab>

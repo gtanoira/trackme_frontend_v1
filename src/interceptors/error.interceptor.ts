@@ -26,16 +26,32 @@ export class ErrorInterceptor implements HttpInterceptor {
         catchError(
           err => {
             console.log('*** INTERCEPTOR error:', err);
-            // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-            if ([401].indexOf(err.status) !== -1) {
+            let error: string;
+
+            // 401: Unauthorized returned from api
+            if (err.status === 401) {
               this.authenticationService.logout();
               // Print the error message and go to LOGIN
-              this.errorMessageService.changeErrorMessage(err.error.message || err.statusText);
+              this.errorMessageService.changeErrorMessage('TRK-0005(E): your session has expired, try login again.');
               this.router.navigate(['/login']);
               // location.reload(true);
+              error = 'TRK-0005(E): your session has expired, try login again.';
+
+            // 404: NOT FOUND
+            } else if (err.status === 404) {
+              // this.errorMessageService.changeErrorMessage('TRK-0005(E): your session has expired, try login again.');
+              error = `TRK-0007(E): host not found. Error: ${err.message} `;
+              // location.reload(true);
+
+            // Chequear la conexión con el host
+            } else if (err.statusText === 'Unknown Error' || err.status === 0) {
+              error = 'TRK-0006(E): there\'s no connection to the host. Error: ' + err.message;
+
+            // Everything else errors
+            } else {
+              error = err.message || err.statusText;
             }
 
-            const error = err.error.message || err.statusText;
             return throwError(error);
           }
         )

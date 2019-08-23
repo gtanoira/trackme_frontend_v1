@@ -30,9 +30,7 @@ const httpOptions = {
 @Component({
   selector: 'app-custorder-tabs',
   templateUrl: './tabs.component.html',
-  host: {
-    class: 'wrapper'
-  }
+  styleUrls: ['./tabs.component.css']
 })
 export class COrderFormTabsComponent implements OnInit {
   @Input() orderId: number;

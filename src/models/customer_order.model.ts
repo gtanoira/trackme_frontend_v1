@@ -3,6 +3,7 @@
 // Table: customer_orders
 export interface CustomerOrderModel {
   // Block: GENERAL
+  id: number;
   companyId: number;
   customerId: number;
   orderNo: number;

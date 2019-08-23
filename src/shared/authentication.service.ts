@@ -130,6 +130,8 @@ export class AuthenticationService {
     sessionStorage.removeItem('currentUser');
     sessionStorage.removeItem('jwtToken');
     this.currentUserSubject.next(null);
+    // Set Program Title
+    this.errorMessageService.changeAppProgramTitle('Login');
     // Ir al Login
     this.router.navigate(['/login']);
   }

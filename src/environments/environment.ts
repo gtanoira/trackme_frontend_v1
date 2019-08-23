@@ -5,8 +5,9 @@
 export const environment = {
   production: false,
   envData: {
-    mode:      'Desarrollo',
-    loginServer:  'http://localhost:3000',
+    mode: 'Desarrollo',
+    loginServer: 'http://localhost:3000',
+    dataBaseServer: 'http://localhost:3000'
   }
 };
 

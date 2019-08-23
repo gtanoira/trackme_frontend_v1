@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 /*
 import { LicenseManager } from 'ag-grid-enterprise';
@@ -15,22 +15,55 @@ import { EventTypeModel } from '../../../../models/event_type.model';
 import { SelectOptions } from '../../../../models/select_options';
 
 // Services
-import { ErrorMessageService } from '../../../../shared/error-message.service';
-import { OrderEventService } from '../../../../shared/order_event.service';
+import { AgGridLoadingComponent } from '../../../../shared/spinners/ag_grid/ag-grid_loading.component';
 import { CustomTooltip } from '../../../../shared/custom-tooltip.component';
+import { ErrorMessageService } from '../../../../shared/error-message.service';
 import { EventTypeService } from '../../../../shared/event_type.service';
+import { HeightService } from '../../../../shared/height.service';
+import { OrderEventService } from '../../../../shared/order_event.service';
+
+/* ***********************************************************************
+    DATE formatting settings
+*/
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as moment from 'moment';
+// import {default as _rollupMoment} from 'moment';
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD-MMM-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+// *********************************************************************
 
 @Component({
   selector: 'app-custorder-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.css'],
-  host: {
-    class: 'wrapper'
-  }
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ]
 })
-export class COrderEventsComponent implements OnInit {
+export class COrderEventsComponent implements OnInit, AfterViewInit {
   @Input() orderId: number;
   @Input() formData: FormGroup;
+
+  // Component Height
+  componentHeight = {};
 
   // ag-grid setup variables
   public  columnDefs;
@@ -38,8 +71,10 @@ export class COrderEventsComponent implements OnInit {
   public  frameworkComponents;
   private gridApi;
   private gridColumnApi;
+  public  loadingOverlayComponent;
+  public  loadingOverlayComponentParams;
   public  overlayLoadingTemplate;
-  public  rowData: EventModel[];
+  public  rowData: EventModel[] = [];
 
   // New event variables
   eventTypeOptions: SelectOptions[];
@@ -50,7 +85,10 @@ export class COrderEventsComponent implements OnInit {
     private http: HttpClient,
     private errorMessageService: ErrorMessageService,
     private orderEventService: OrderEventService,
-    private eventTypeService: EventTypeService
+    private eventTypeService: EventTypeService,
+    private el: ElementRef,
+    private heightService: HeightService,
+    private renderer: Renderer2
   ) {
 
     // Event's Grid Definitions
@@ -77,10 +115,12 @@ export class COrderEventsComponent implements OnInit {
       tooltipComponent: 'customTooltip',
       resizable: true
     };
-    this.overlayLoadingTemplate = '<div class="loader-spinner"></div>';
     this.frameworkComponents = {
+      customLoadingOverlay: AgGridLoadingComponent,
       customTooltip: CustomTooltip
     };
+    this.loadingOverlayComponent = 'customLoadingOverlay';
+    this.loadingOverlayComponentParams = { loadingMessage: 'Loading ...' };
   }
 
   ngOnInit() {
@@ -100,10 +140,22 @@ export class COrderEventsComponent implements OnInit {
       );
   }
 
+  ngAfterViewInit() {
+    const parentElement = document.getElementsByTagName('mat-tab-header');
+    console.log('*** MAT-TAB-HEADER element:', parentElement);
+    console.log('*** EL:', this.el);
+    setTimeout(() => {
+      this.componentHeight = { height: `calc(100% - ${this.el.nativeElement.firstChild.offsetHeight}px)` };
+    }, 2000);
+  }
+
   // This routine is executed when the ag-grid is ready
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
+
+    // Spinner
+    this.gridApi.showLoadingOverlay();
 
     // Get all events from the customer order
     this.orderEventService.getEventsFromCustomerOrder(this.orderId)

@@ -27,6 +27,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { DynamicModule } from 'ng-dynamic-component';
 
 // Services
+import { AgGridLoadingComponent } from '../shared/spinners/ag_grid/ag-grid_loading.component';
 import { AuthenticationService } from '../shared/authentication.service';
 import { AuxiliarTableService } from '../shared/auxiliar_table.service';
 import { CompanyService } from '../shared/company.service';
@@ -35,11 +36,12 @@ import { CustomerOrderService } from '../shared/customer_order.service';
 import { EntityService } from '../shared/entity.service';
 import { ErrorMessageService } from '../shared/error-message.service';
 import { EventTypeService } from '../shared/event_type.service';
+import { HeightService } from '../shared/height.service';
 import { OrderEventService } from '../shared/order_event.service';
 import { WarehouseReceiptService } from '../shared/warehouse_receipt.service';
 
 // Directives
-import { OnlyNumbersDirective, ToUppercaseDirective, NumberFormatterDirective } from '../shared/formatter.directives';
+import { OnlyNumbersDirective, ToUppercaseDirective, NumberFormatterDirective } from '../directives/formatter.directive';
 
 // Interceptors
 import { interceptorProviders } from '../interceptors/interceptors';
@@ -62,6 +64,8 @@ import { COrderEventsComponent } from './customer_orders/form/events/events.comp
 @NgModule({
   declarations: [
     AppComponent,
+    AgGridLoadingComponent,
+    // Directives
     NumberFormatterDirective,
     OnlyNumbersDirective,
     ToUppercaseDirective,
@@ -76,7 +80,7 @@ import { COrderEventsComponent } from './customer_orders/form/events/events.comp
     COrderEventsComponent
   ],
   imports: [
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([AgGridLoadingComponent]),
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
@@ -116,6 +120,7 @@ import { COrderEventsComponent } from './customer_orders/form/events/events.comp
     EntityService,
     ErrorMessageService,
     EventTypeService,
+    HeightService,
     HttpClientModule,
     interceptorProviders,
     OrderEventService,

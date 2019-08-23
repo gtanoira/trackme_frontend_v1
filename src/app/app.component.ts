@@ -37,10 +37,25 @@ export class AppComponent implements OnInit, OnChanges {
   ) {
 
     // Definir iconos
+    // Add
+    this.matIconRegistry.addSvgIcon(
+      'add',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/add.svg')
+    );
+    // Add Green
+    this.matIconRegistry.addSvgIcon(
+      'add_green',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/add_green.svg')
+    );
     // Data-Table
     this.matIconRegistry.addSvgIcon(
       'data-table',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/data-table.svg')
+    );
+    // Delete Red
+    this.matIconRegistry.addSvgIcon(
+      'delete_red',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/delete_red.svg')
     );
     // EnvironmentInfo
     this.matIconRegistry.addSvgIcon(
@@ -66,6 +81,16 @@ export class AppComponent implements OnInit, OnChanges {
     this.matIconRegistry.addSvgIcon(
       'user_password',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/lock.svg')
+    );
+    // Reload
+    this.matIconRegistry.addSvgIcon(
+      'reload',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/recycle.svg')
+    );
+    // Save
+    this.matIconRegistry.addSvgIcon(
+      'save',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/save.svg')
     );
     // SpreadSheet
     this.matIconRegistry.addSvgIcon(
