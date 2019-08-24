@@ -16,6 +16,7 @@ import { SelectOptions } from '../../../../models/select_options';
 
 // Services
 import { AgGridLoadingComponent } from '../../../../shared/spinners/ag_grid/ag-grid_loading.component';
+import { AuthenticationService } from '../../../../shared/authentication.service';
 import { CustomTooltip } from '../../../../shared/custom-tooltip.component';
 import { ErrorMessageService } from '../../../../shared/error-message.service';
 import { EventTypeService } from '../../../../shared/event_type.service';
@@ -81,6 +82,7 @@ export class COrderEventsComponent implements OnInit, AfterViewInit {
   eventFormGroup: FormGroup;
 
   constructor(
+    private authenticationService: AuthenticationService,
     private fb: FormBuilder,
     private http: HttpClient,
     private errorMessageService: ErrorMessageService,
@@ -95,14 +97,14 @@ export class COrderEventsComponent implements OnInit, AfterViewInit {
     this.columnDefs = [
       {
         headerName: 'Date',
-        field: 'eventDate',
+        field: 'eventDatetime',
         width: 150,
         sort: 'desc',
         sortingOrder: ['asc', 'desc'],
         valueFormatter: displayDate
       }, {
         headerName: 'Event',
-        field: 'eventName',
+        field: 'eventTypeName',
         width: 300
       }, {
         headerName: 'Observations',
@@ -142,8 +144,6 @@ export class COrderEventsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const parentElement = document.getElementsByTagName('mat-tab-header');
-    console.log('*** MAT-TAB-HEADER element:', parentElement);
-    console.log('*** EL:', this.el);
     setTimeout(() => {
       this.componentHeight = { height: `calc(100% - ${this.el.nativeElement.firstChild.offsetHeight}px)` };
     }, 2000);
@@ -164,39 +164,42 @@ export class COrderEventsComponent implements OnInit, AfterViewInit {
       );
   }
 
-  addCustomerEvent(orderId) {
+  addCustomerEvent(orderId: number) {
 
     // Check if the order is in UPDATE mode
-    if (this.formData.value.formProperties.mode !== 'UPDATE') {
-      this.errorMessageService.changeErrorMessage('TRK-0003(I): you must save the form first in order to add a new event.');
-
-    // Check if the event type Id is null
-    } else if (this.eventFormGroup.value.eventTypeId == null || this.eventFormGroup.value.eventTypeId === '') {
-      this.errorMessageService.changeErrorMessage('TRK-0001(E): the field NEW EVENT cannot be empty.');
+    if (this.formData.value.formProperties.mode === 'INSERT') {
+      this.errorMessageService.changeErrorMessage('TRK-0003(I): you must save the order first, in order to add a new event.');
 
     // Add the new event to the DataBase
     } else {
 
       // Map data before send
+      const user = this.authenticationService.currentUserValue;
       const customerOrderEvent = {
-        orderId,
-        eventDatetime: this.eventFormGroup.value.eventDatetime,
         eventTypeId:   this.eventFormGroup.value.eventTypeId,
+        userId: user.id,
+        eventDatetime: this.eventFormGroup.value.eventDatetime,
+        eventScope: 'PUB',
         observations:  this.eventFormGroup.value.observations,
-        eventScope:    'PUB'
+        customerOrderId: orderId
       };
 
       // Add the new event in the DBase
-      this.http.post(`/api/customer_orders/${orderId}/events.json`, customerOrderEvent)
+      this.orderEventService.addEventToCustomerOrder(orderId, customerOrderEvent)
         .subscribe(
           data => {
-            this.errorMessageService.changeErrorMessage(data['message']);
+            this.errorMessageService.changeErrorMessage(data['message'] +' '+ data['extraMsg']);
             setTimeout(() => { this.errorMessageService.changeErrorMessage(''); }, 10000);   // delete the message after 10 secs.
+
+            // Resetear el FORM
+            this.eventFormGroup.get('eventDatetime').setValue('');
+            this.eventFormGroup.get('eventTypeId').setValue('');
+            this.eventFormGroup.get('observations').setValue('');
 
             // Reread all the events of the order and show them on screen
             this.orderEventService.getEventsFromCustomerOrder(this.orderId)
               .subscribe(
-                data => this.gridApi.setRowData(data)
+                events => this.gridApi.setRowData(events)
               );
           },
           error => {

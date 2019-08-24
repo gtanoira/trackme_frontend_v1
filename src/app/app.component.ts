@@ -2,7 +2,7 @@
   Este componente es el principal del sistema y muestra la página ppal del portal y el
   esquema de menúes
 */
-import { Component, ElementRef, OnInit, OnChanges } from '@angular/core';
+import { Component, ElementRef, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 
@@ -18,7 +18,7 @@ import { environment } from '../environments/environment';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnChanges {
+export class AppComponent implements OnInit, OnChanges, OnDestroy {
 
   // Error Messages from the entire APP
   formErrorMessage: string;
@@ -134,6 +134,9 @@ export class AppComponent implements OnInit, OnChanges {
   ngOnChanges() {
     // Set Program Title
     this.errorMessageService.changeAppProgramTitle('Customer Orders');
+  }
+
+  ngOnDestroy() {
   }
 
 }

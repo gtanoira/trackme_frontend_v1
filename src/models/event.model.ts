@@ -2,8 +2,12 @@
 
 // Table: customer_orders
 export interface EventModel {
-  eventDate: string;
-  eventName: string;
+  eventTypeId: number;
+  eventTypeName?: string;
+  userId: number;
+  userName?: string;
+  eventDatetime: string;
+  eventScope: string | 'PUB';
   observations: string;
-  eventUser: string;
+  customerOrderId: number;
 }

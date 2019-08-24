@@ -158,7 +158,6 @@ export class COrderFormComponent implements OnInit, AfterViewInit, AfterContentI
       blkGeneral: this.fb.group({
         companyId: [1, [<any>Validators.required]],
         orderNo: ['NEW'],
-        orderId: ['NEW'],
         custRef: [''],
         orderType: ['P'],
         customerId: ['', [<any>Validators.required, this.validateCustomerId.bind(this)]],
@@ -298,23 +297,21 @@ export class COrderFormComponent implements OnInit, AfterViewInit, AfterContentI
     // Save order
     this.customerOrderService.updCustomerOrderById(orderId, this.formData).subscribe(
       data => {
-        console.log('*** DATA:', data);
 
         // Re-set the order for QUERY modality
         if (this.formData.value.formProperties.mode === 'INSERT') {
           this.formData.value.formProperties.mode = 'QUERY';
           this.formData.get('blkGeneral').get('customerId').disable();
-          // this.formData.value.blkGeneral.customerId = vformData.blkGeneral.customerId;
           this.formData.get('blkGeneral').get('companyId').disable();
-          // this.formData.value.blkGeneral.companyId = vformData.blkGeneral.companyId;
           this.formData.get('blkGeneral').get('orderNo').setValue(data['orderNo']);
-          this.orderId = data['orderId'];
+          this.orderId = data['id'];
           // Output message
           this.errorMessageService.changeErrorMessage(
             `The new customer order #${this.orderNo.value} was created succesfuly`
           );
           setTimeout(() => { this.errorMessageService.changeErrorMessage(''); }, 10000);
         } else {
+          this.formData.value.formProperties.mode = 'QUERY';
           // Output message
           this.errorMessageService.changeErrorMessage(
             `The order #${this.orderNo.value} was updated succesfuly`

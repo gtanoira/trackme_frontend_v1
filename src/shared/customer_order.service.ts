@@ -78,6 +78,9 @@ export class CustomerOrderService {
       fromZipcode:   vformData.blkFrom.fromZipcode,
       fromState:     vformData.blkFrom.fromState,
       fromCountryId: vformData.blkFrom.fromCountryId,
+      fromContact:   vformData.blkFrom.fromContact,
+      fromEmail:     vformData.blkFrom.fromEmail,
+      fromTel:       vformData.blkFrom.fromTel,
       // Block To
       toEntity:      vformData.blkTo.toEntity,
       toAddress1:    vformData.blkTo.toAddress1,
@@ -85,7 +88,10 @@ export class CustomerOrderService {
       toCity:        vformData.blkTo.toCity,
       toZipcode:     vformData.blkTo.toZipcode,
       toState:       vformData.blkTo.toState,
-      toCountryId:   vformData.blkTo.toCountryId
+      toCountryId:   vformData.blkTo.toCountryId,
+      toContact:     vformData.blkFrom.toContact,
+      toEmail:       vformData.blkFrom.toEmail,
+      toTel:         vformData.blkFrom.toTel
     };
 
     if (vformData.formProperties.mode === 'INSERT') {
@@ -94,9 +100,7 @@ export class CustomerOrderService {
           INSERT new Order into the DBase
       */
       // Add the new customer order in the DBase
-      return this.http.post(`${environment.envData.dataBaseServer}/api/v1/customer_orders.json`, customerOrder).pipe(
-        map(data => data)
-      );
+      return this.http.post(`${environment.envData.dataBaseServer}/api/v1/customer_orders.json`, customerOrder);
 
     } else {
 
@@ -104,9 +108,7 @@ export class CustomerOrderService {
           UPDATE a existing Order to the DBase
       */
       // Add the new customer order in the DBase
-      return this.http.patch(`${environment.envData.dataBaseServer}/api/v1/customer_orders/${orderId}.json`, customerOrder).pipe(
-        map(data => data)
-      );
+      return this.http.patch(`${environment.envData.dataBaseServer}/api/v1/customer_orders/${orderId}.json`, customerOrder);
     }
 
   }
